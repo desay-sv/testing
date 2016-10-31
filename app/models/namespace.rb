@@ -4,11 +4,15 @@ class Namespace < ActiveRecord::Base
   include CacheMarkdownField
   include Sortable
   include Gitlab::ShellAdapter
+  include Routable
 
   cache_markdown_field :description, pipeline: :description
 
   has_many :projects, dependent: :destroy
   belongs_to :owner, class_name: "User"
+
+  belongs_to :parent, class_name: "Namespace"
+  has_many :children, class_name: "Namespace", foreign_key: "parent_id", dependent: :destroy
 
   validates :owner, presence: true, unless: ->(n) { n.type == "Group" }
   validates :name,
@@ -83,10 +87,14 @@ class Namespace < ActiveRecord::Base
 
       path
     end
+
+    def find_by_full_path(full_path)
+      Route.find_by(path: full_path, source_type: 'Namespace').try(:source)
+    end
   end
 
   def to_param
-    path
+    full_path
   end
 
   def human_name
@@ -148,6 +156,14 @@ class Namespace < ActiveRecord::Base
   def lfs_enabled?
     # User namespace will always default to the global setting
     Gitlab.config.lfs.enabled
+  end
+
+  def full_path
+    if parent
+      parent.full_path + '/' + path
+    else
+      path
+    end
   end
 
   private
