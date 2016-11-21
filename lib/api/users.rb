@@ -350,7 +350,8 @@ module API
         success Entities::UserFull
       end
       get do
-        present current_user, with: Entities::UserFull, sudo_identifier: sudo_identifier
+        entity = current_user.is_admin? && sudo_identifier.present? ? Entities::UserLogin : Entities::UserFull
+        present current_user, with: entity
       end
 
       desc "Get the currently authenticated user's SSH keys" do
