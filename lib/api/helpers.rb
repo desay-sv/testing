@@ -67,6 +67,10 @@ module API
       end
     end
 
+    def allowed_to_sudo?(user)
+      user.is_admin? && private_token == user.private_token
+    end
+
     def user_project
       @project ||= find_project!(params[:id])
     end

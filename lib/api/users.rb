@@ -49,7 +49,7 @@ module API
           users = users.external if params[:external] && current_user.is_admin?
         end
 
-        entity = current_user.is_admin? ? Entities::UserFull : Entities::UserBasic
+        entity = current_user.is_admin? ? Entities::UserPublic : Entities::UserBasic
         present paginate(users), with: entity
       end
 
@@ -64,7 +64,7 @@ module API
         not_found!('User') unless user
 
         if current_user && current_user.is_admin?
-          present user, with: Entities::UserFull
+          present user, with: Entities::UserPublic
         elsif can?(current_user, :read_user, user)
           present user, with: Entities::User
         else
@@ -73,7 +73,7 @@ module API
       end
 
       desc 'Create a user. Available only for admins.' do
-        success Entities::UserFull
+        success Entities::UserPublic
       end
       params do
         requires :email, type: String, desc: 'The email of the user'
@@ -97,7 +97,7 @@ module API
         end
 
         if user.save
-          present user, with: Entities::UserFull
+          present user, with: Entities::UserPublic
         else
           conflict!('Email has already been taken') if User.
               where(email: user.email).
@@ -112,7 +112,7 @@ module API
       end
 
       desc 'Update a user. Available only for admins.' do
-        success Entities::UserFull
+        success Entities::UserPublic
       end
       params do
         requires :id, type: Integer, desc: 'The ID of the user'
@@ -159,7 +159,7 @@ module API
         user_params.delete(:provider)
 
         if user.update_attributes(user_params)
-          present user, with: Entities::UserFull
+          present user, with: Entities::UserPublic
         else
           render_validation_error!(user)
         end
@@ -347,11 +347,20 @@ module API
 
     resource :user do
       desc 'Get the currently authenticated user' do
-        success Entities::UserFull
+        success Entities::UserPublic
       end
       get do
-        entity = current_user.is_admin? && sudo_identifier.present? ? Entities::UserLogin : Entities::UserFull
-        present current_user, with: entity
+        target_user = current_user
+        current_user = find_user_by_private_token
+
+        # We check for private_token because we cannot allow PAT to be used
+        entity = if current_user && sudo_identifier.present? && allowed_to_sudo?(current_user)
+                   Entities::UserLogin
+                 else
+                   Entities::UserPublic
+                 end
+
+        present target_user, with: entity
       end
 
       desc "Get the currently authenticated user's SSH keys" do
