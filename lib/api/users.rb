@@ -350,17 +350,16 @@ module API
         success Entities::UserPublic
       end
       get do
-        target_user = current_user
-        current_user = find_user_by_private_token
+        sudo_user = find_user_by_private_token
 
         # We check for private_token because we cannot allow PAT to be used
-        entity = if current_user && sudo_identifier.present? && allowed_to_sudo?(current_user)
+        entity = if sudo_user && sudo_identifier.present? && allowed_to_sudo?(sudo_user)
                    Entities::UserLogin
                  else
                    Entities::UserPublic
                  end
 
-        present target_user, with: entity
+        present current_user, with: entity
       end
 
       desc "Get the currently authenticated user's SSH keys" do

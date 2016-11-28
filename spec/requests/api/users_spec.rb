@@ -656,20 +656,18 @@ describe API::API, api: true  do
 
     context 'with regular user' do
       context 'with personal access token' do
-        it 'returns current user without private token when sudo is defined' do
+        it 'returns 403 without private token when sudo is defined' do
           get api("/user?private_token=#{personal_access_token.token}&sudo=#{user.id}")
 
-          expect(response).to have_http_status(200)
-          expect(response).to match_response_schema('user/public')
+          expect(response).to have_http_status(403)
         end
       end
 
       context 'with private token' do
-        it 'returns user without private token when sudo defined' do
+        it 'returns 403 without private token when sudo defined' do
           get api("/user?private_token=#{private_token}&sudo=#{user.id}")
 
-          expect(response).to have_http_status(200)
-          expect(response).to match_response_schema('user/public')
+          expect(response).to have_http_status(403)
         end
       end
 
