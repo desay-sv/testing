@@ -20,7 +20,6 @@
       this.filterInputBlur = (ref = this.options.filterInputBlur) != null ? ref : true;
       $inputContainer = this.input.parent();
       $clearButton = $inputContainer.find('.js-dropdown-input-clear');
-      this.indeterminateIds = [];
       $clearButton.on('click', (function(_this) {
         // Clear click
         return function(e) {
@@ -211,6 +210,7 @@
     function GitLabDropdown(el1, options) {
       var searchFields, selector, self;
       this.el = el1;
+      this.$el = $(this.el);
       this.options = options;
       this.updateLabel = bind(this.updateLabel, this);
       this.hidden = bind(this.hidden, this);
@@ -441,12 +441,6 @@
       this.resetRows();
       this.addArrowKeyEvent();
 
-      if (this.options.setIndeterminateIds) {
-        this.options.setIndeterminateIds.call(this);
-      }
-      if (this.options.setActiveIds) {
-        this.options.setActiveIds.call(this);
-      }
       // Makes indeterminate items effective
       if (this.fullData && this.dropdown.find('.dropdown-menu-toggle').hasClass('js-filter-bulk-update')) {
         this.parseData(this.fullData);
@@ -617,7 +611,8 @@
     };
 
     GitLabDropdown.prototype.rowClicked = function(el) {
-      var field, fieldName, groupName, isInput, selectedIndex, selectedObject, value;
+      var field, fieldName, groupName, isInput, selectedIndex, selectedObject, value, markedIds, unmarkedIds, i, isMarking;
+
       fieldName = this.options.fieldName;
       isInput = $(this.el).is('input');
       if (this.renderedData) {
@@ -651,6 +646,7 @@
         field = this.dropdown.parent().find("input[name='" + fieldName + "'][value='" + value.toString().replace(/'/g, '\\\'') + "']");
       }
       if (el.hasClass(ACTIVE_CLASS)) {
+        isMarking = false;
         el.removeClass(ACTIVE_CLASS);
         if (field && field.length) {
           if (isInput) {
@@ -660,6 +656,7 @@
           }
         }
       } else if (el.hasClass(INDETERMINATE_CLASS)) {
+        isMarking = true;
         el.addClass(ACTIVE_CLASS);
         el.removeClass(INDETERMINATE_CLASS);
         if (field && field.length && value == null) {
@@ -669,6 +666,7 @@
           this.addInput(fieldName, value, selectedObject);
         }
       } else {
+        isMarking = true;
         if (!this.options.multiSelect || el.hasClass('dropdown-clear-active')) {
           this.dropdown.find("." + ACTIVE_CLASS).removeClass(ACTIVE_CLASS);
           if (!isInput) {
@@ -688,6 +686,46 @@
           }
         }
       }
+
+      // Update active IDs
+      markedIds = this.$el.data('marked') || [];
+      unmarkedIds = this.$el.data('unmarked') || [];
+      indeterminateIds = this.$el.data('indeterminate') || [];
+
+      if (isMarking) {
+        markedIds.push(value);
+
+        i = indeterminateIds.indexOf(value);
+        if (i > -1) {
+          indeterminateIds.splice(i, 1);
+        }
+
+        i = unmarkedIds.indexOf(value);
+        if (i >- 1) {
+          unmarkedIds.splice(i, 1);
+        }
+      } else {
+        // If marked item (not common) is unmarked
+        i = markedIds.indexOf(value);
+        if (i > -1) {
+          markedIds.splice(i, 1);
+        }
+
+        // If an indeterminate item is being unmarked
+        if (gl.IssuableBulkActions.getOriginalIndeterminateIds().indexOf(value) > -1) {
+          unmarkedIds.push(value);
+        }
+
+        // If a marked item is being unmarked
+        // (a marked item could also be a label that is present in all selection)
+        if (gl.IssuableBulkActions.getOriginalCommonIds().indexOf(value) > -1) {
+          unmarkedIds.push(value);
+        }
+      }
+
+      this.$el.data('marked', markedIds);
+      this.$el.data('unmarked', unmarkedIds);
+      this.$el.data('indeterminate', indeterminateIds);
 
       return selectedObject;
     };

@@ -5,8 +5,9 @@
       var _this;
       _this = this;
       $('.js-label-select').each(function(i, dropdown) {
-        var $block, $colorPreview, $dropdown, $form, $loading, $selectbox, $sidebarCollapsedValue, $value, abilityName, defaultLabel, enableLabelCreateButton, issueURLSplit, issueUpdateURL, labelHTMLTemplate, labelNoneHTMLTemplate, labelUrl, namespacePath, projectPath, saveLabelData, selectedLabel, showAny, showNo, $sidebarLabelTooltip, initialSelected, $toggleText, fieldName, useId, propertyName, showMenuAbove;
+        var $block, $colorPreview, $dropdown, $form, $loading, $selectbox, $sidebarCollapsedValue, $value, abilityName, defaultLabel, enableLabelCreateButton, issueURLSplit, issueUpdateURL, labelHTMLTemplate, labelNoneHTMLTemplate, labelUrl, namespacePath, projectPath, saveLabelData, selectedLabel, showAny, showNo, $sidebarLabelTooltip, initialSelected, $toggleText, fieldName, useId, propertyName, showMenuAbove, $container;
         $dropdown = $(dropdown);
+        $dropdownContainer = $dropdown.closest('.labels-filter')
         $toggleText = $dropdown.find('.dropdown-toggle-text');
         namespacePath = $dropdown.data('namespace-path');
         projectPath = $dropdown.data('project-path');
@@ -46,7 +47,7 @@
 
         $sidebarLabelTooltip.tooltip();
 
-        if ($dropdown.closest('.dropdown').find('.dropdown-new-label').length) {
+        if ($dropdownContainer.find('.dropdown-new-label').length) {
           new gl.CreateLabelDropdown($dropdown.closest('.dropdown').find('.dropdown-new-label'), namespacePath, projectPath);
         }
 
@@ -169,33 +170,31 @@
             });
           },
           renderRow: function(label, instance) {
-            var $a, $li, active, color, colorEl, indeterminate, removesAll, selectedClass, spacing;
+            var $a, $li, active, color, colorEl, indeterminate, removesAll, selectedClass, spacing, i;
             $li = $('<li>');
             $a = $('<a href="#">');
             selectedClass = [];
             removesAll = label.id <= 0 || (label.id == null);
             if ($dropdown.hasClass('js-filter-bulk-update')) {
-              indeterminate = instance.indeterminateIds;
-              active = instance.activeIds;
+              indeterminate = instance.$el.data('indeterminate') || [];
+              marked = instance.$el.data('marked') || [];
+
               if (indeterminate.indexOf(label.id) !== -1) {
                 selectedClass.push('is-indeterminate');
               }
-              if (active.indexOf(label.id) !== -1) {
+
+              if (marked.indexOf(label.id) !== -1) {
                 // Remove is-indeterminate class if the item will be marked as active
                 i = selectedClass.indexOf('is-indeterminate');
                 if (i !== -1) {
                   selectedClass.splice(i, 1);
                 }
                 selectedClass.push('is-active');
-                // Add input manually
-                instance.addInput(this.fieldName, label.id);
               }
-            }
-            if (this.id(label) && $form.find("input[type='hidden'][name='" + ($dropdown.data('fieldName')) + "'][value='" + this.id(label).toString().replace(/'/g, '\\\'') + "']").length) {
-              selectedClass.push('is-active');
-            }
-            if ($dropdown.hasClass('js-multiselect') && removesAll) {
-              selectedClass.push('dropdown-clear-active');
+            } else {
+              if ($dropdown.hasClass('js-multiselect') && removesAll) {
+                selectedClass.push('dropdown-clear-active');
+              }
             }
             if (label.duplicate) {
               spacing = 100 / label.color.length;
@@ -397,16 +396,6 @@
               }
             }
           },
-          setIndeterminateIds: function() {
-            if (this.dropdown.find('.dropdown-menu-toggle').hasClass('js-filter-bulk-update')) {
-              return this.indeterminateIds = _this.getIndeterminateIds();
-            }
-          },
-          setActiveIds: function() {
-            if (this.dropdown.find('.dropdown-menu-toggle').hasClass('js-filter-bulk-update')) {
-              return this.activeIds = _this.getActiveIds();
-            }
-          }
         });
       });
       this.bindEvents();
@@ -421,31 +410,7 @@
         return;
       }
       // Remove inputs
-      $('.issues_bulk_update .labels-filter input[type="hidden"]').remove();
-      // Also restore button text
       return $('.issues_bulk_update .labels-filter .dropdown-toggle-text').text('Label');
-    };
-
-    LabelsSelect.prototype.getIndeterminateIds = function() {
-      var label_ids;
-      label_ids = [];
-      $('.selected_issue:checked').each(function(i, el) {
-        var issue_id;
-        issue_id = $(el).data('id');
-        return label_ids.push($("#issue_" + issue_id).data('labels'));
-      });
-      return _.flatten(label_ids);
-    };
-
-    LabelsSelect.prototype.getActiveIds = function() {
-      var label_ids;
-      label_ids = [];
-      $('.selected_issue:checked').each(function(i, el) {
-        var issue_id;
-        issue_id = $(el).data('id');
-        return label_ids.push($("#issue_" + issue_id).data('labels'));
-      });
-      return _.intersection.apply(_, label_ids);
     };
 
     LabelsSelect.prototype.enableBulkLabelDropdown = function() {
@@ -457,7 +422,6 @@
     };
 
     return LabelsSelect;
-
   })();
 
 }).call(this);
