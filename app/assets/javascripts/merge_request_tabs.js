@@ -1,4 +1,4 @@
-/* eslint-disable max-len, func-names, space-before-function-paren, no-var, space-before-blocks, prefer-rest-params, wrap-iife, no-use-before-define, no-underscore-dangle, no-undef, one-var, one-var-declaration-per-line, quotes, comma-dangle, consistent-return, prefer-template, no-param-reassign, camelcase, vars-on-top, space-in-parens, curly, prefer-arrow-callback, no-unused-vars, no-return-assign, semi, object-shorthand, operator-assignment, padded-blocks, max-len */
+/* eslint-disable max-len, no-new, func-names, space-before-function-paren, no-var, space-before-blocks, prefer-rest-params, wrap-iife, no-use-before-define, no-underscore-dangle, no-undef, one-var, one-var-declaration-per-line, quotes, comma-dangle, consistent-return, prefer-template, no-param-reassign, camelcase, vars-on-top, space-in-parens, curly, prefer-arrow-callback, no-unused-vars, no-return-assign, semi, object-shorthand, operator-assignment, padded-blocks, max-len */
 // MergeRequestTabs
 //
 // Handles persisting and restoring the current tab selection and lazily-loading
@@ -240,51 +240,19 @@
             }
             _this.diffsLoaded = true;
             var anchoredDiff = gl.utils.getLocationHash();
-            if (anchoredDiff) _this.openAnchoredDiff(anchoredDiff, function() {
+            new Diff(function() {
               _this.scrollToElement("#diffs");
-              _this.highlighSelectedLine();
             });
             _this.filesCommentButton = $('.files .diff-file').filesCommentButton();
             return $(document).off('click', '.diff-line-num a').on('click', '.diff-line-num a', function(e) {
               e.preventDefault();
               window.location.hash = $(e.currentTarget).attr('href');
-              _this.highlighSelectedLine();
+              Diff.highlighSelectedLine();
               return _this.scrollToElement("#diffs");
             });
           };
         })(this)
       });
-    };
-
-    MergeRequestTabs.prototype.openAnchoredDiff = function(anchoredDiff, cb) {
-      var diffTitle = $('#' + anchoredDiff);
-      var diffFile = diffTitle.closest('.diff-file');
-      var nothingHereBlock = $('.nothing-here-block:visible', diffFile);
-      if (nothingHereBlock.length) {
-        diffFile.singleFileDiff(true, cb);
-      } else {
-        cb();
-      }
-    };
-
-    MergeRequestTabs.prototype.highlighSelectedLine = function() {
-      var $diffLine, diffLineTop, hashClassString, locationHash, navBarHeight;
-      $('.hll').removeClass('hll');
-      locationHash = window.location.hash;
-      if (locationHash !== '') {
-        dataLineString = '[data-line-code="' + locationHash.replace('#', '') + '"]';
-        $diffLine = $(locationHash + ":not(.match)", $('#diffs'));
-        if (!$diffLine.is('tr')) {
-          $diffLine = $('#diffs').find("td" + locationHash + ", td" + dataLineString);
-        } else {
-          $diffLine = $diffLine.find('td');
-        }
-        if ($diffLine.length) {
-          $diffLine.addClass('hll');
-          diffLineTop = $diffLine.offset().top;
-          return navBarHeight = $('.navbar-gitlab').outerHeight();
-        }
-      }
     };
 
     MergeRequestTabs.prototype.loadBuilds = function(source) {

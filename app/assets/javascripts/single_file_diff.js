@@ -32,13 +32,11 @@
         this.$toggleIcon.addClass('fa-caret-down');
       }
       $('.file-title, .click-to-expand', this.file).on('click', this.toggleDiff);
-      if (forceLoad) {
-        this.toggleDiff(null, cb);
-      }
+      if (forceLoad) this.toggleDiff(null, cb, $('.file-title', file));
     }
 
-    SingleFileDiff.prototype.toggleDiff = function(e, cb) {
-      var $target = $(e.target);
+    SingleFileDiff.prototype.toggleDiff = function(e, cb, $target) {
+      $target = $target || $(e.target);
       if (!$target.hasClass('file-title') && !$target.hasClass('click-to-expand') && !$target.hasClass('diff-toggle-caret')) return;
       this.isOpen = !this.isOpen;
       if (!this.isOpen && !this.hasError) {

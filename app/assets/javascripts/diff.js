@@ -1,12 +1,18 @@
-/* eslint-disable func-names, space-before-function-paren, wrap-iife, no-var, max-len, one-var, camelcase, one-var-declaration-per-line, no-unused-vars, no-unused-expressions, no-sequences, object-shorthand, comma-dangle, prefer-arrow-callback, semi, radix, padded-blocks, max-len */
+/* eslint-disable vars-on-top, curly, no-lonely-if, consistent-return, prefer-template, quotes, no-undef, no-return-assign, func-names, space-before-function-paren, wrap-iife, no-var, max-len, one-var, camelcase, one-var-declaration-per-line, no-unused-vars, no-unused-expressions, no-sequences, object-shorthand, comma-dangle, prefer-arrow-callback, semi, radix, padded-blocks, max-len */
 (function() {
   this.Diff = (function() {
     var UNFOLD_COUNT;
 
     UNFOLD_COUNT = 20;
 
-    function Diff() {
+    function Diff(cb) {
       $('.files .diff-file').singleFileDiff();
+      var anchoredDiff = gl.utils.getLocationHash();
+      if (anchoredDiff) Diff.openAnchoredDiff(anchoredDiff, function() {
+        Diff.highlighSelectedLine();
+        if (cb) cb();
+      });
+
       this.filesCommentButton = $('.files .diff-file').filesCommentButton();
       if (this.diffViewType() === 'parallel') {
         $('.content-wrapper .container-fluid').removeClass('container-limited');
@@ -64,6 +70,37 @@
       return line.find('.diff-line-num').map(function() {
         return parseInt($(this).data('linenumber'));
       });
+    };
+
+    Diff.openAnchoredDiff = function(anchoredDiff, cb) {
+      var diffTitle = $('#' + anchoredDiff);
+      var diffFile = diffTitle.closest('.diff-file');
+      var nothingHereBlock = $('.nothing-here-block:visible', diffFile);
+      if (nothingHereBlock.length) {
+        diffFile.singleFileDiff(true, cb);
+      } else {
+        if (cb) cb();
+      }
+    };
+
+    Diff.highlighSelectedLine = function() {
+      var $diffLine, diffLineTop, hashClassString, locationHash, navBarHeight;
+      $('.hll').removeClass('hll');
+      locationHash = window.location.hash;
+      if (locationHash !== '') {
+        dataLineString = '[data-line-code="' + locationHash.replace('#', '') + '"]';
+        $diffLine = $(locationHash + ":not(.match)", $('#diffs'));
+        if (!$diffLine.is('tr')) {
+          $diffLine = $('#diffs').find("td" + locationHash + ", td" + dataLineString);
+        } else {
+          $diffLine = $diffLine.find('td');
+        }
+        if ($diffLine.length) {
+          $diffLine.addClass('hll');
+          diffLineTop = $diffLine.offset().top;
+          return navBarHeight = $('.navbar-gitlab').outerHeight();
+        }
+      }
     };
 
     return Diff;
