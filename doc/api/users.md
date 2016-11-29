@@ -291,11 +291,12 @@ Parameters:
 
 - `id` (required) - The ID of the user
 
-## User
+## Current user
 
-### For normal users
+Gets the currently authenticated user.
 
-Gets currently authenticated user.
+**For normal users**
+
 
 ```
 GET /user
@@ -337,11 +338,15 @@ GET /user
 }
 ```
 
-### For admins
+**For admins**
+
+An admin can perform a [sudo action](../README.md#sudo) by passing the `sudo`
+parameter to the request. If `sudo` is used, the `private_token` of the user
+is exposed in the response.
 
 Parameters:
 
-- `sudo` (required) - the ID of a user
+- `sudo` (required) - the ID of a user or a username
 
 ```
 GET /user
