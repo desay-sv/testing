@@ -257,7 +257,7 @@
     };
 
     MergeRequestTabs.prototype.openAnchoredDiff = function(anchoredDiff, cb) {
-      var diffTitle = $('#file-path-' + anchoredDiff);
+      var diffTitle = $('#' + anchoredDiff);
       var diffFile = diffTitle.closest('.diff-file');
       var nothingHereBlock = $('.nothing-here-block:visible', diffFile);
       if (nothingHereBlock.length) {
