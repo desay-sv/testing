@@ -50,7 +50,7 @@ module API
         forbidden!('Must be admin to use sudo') unless @current_user.is_admin?
 
         # If the sudo is the current user do nothing
-        if !(@current_user.id == identifier || @current_user.username == identifier)
+        unless @current_user.id == identifier || @current_user.username == identifier
           @current_user = User.by_username_or_id(identifier)
           not_found!("No user id or username for: #{identifier}") if @current_user.nil?
         end
