@@ -65,7 +65,7 @@ module API
         success Entities::MergeRequest
       end
       params do
-        requires :title, type: String, desc: 'The title of the merge request'
+        requires :title, type: String, allow_blank: false, desc: 'The title of the merge request'
         requires :source_branch, type: String, desc: 'The source branch'
         requires :target_branch, type: String, desc: 'The target branch'
         optional :target_project_id, type: Integer,
@@ -143,7 +143,7 @@ module API
           success Entities::MergeRequest
         end
         params do
-          optional :title, type: String, desc: 'The title of the merge request'
+          optional :title, type: String, allow_blank: false, desc: 'The title of the merge request'
           optional :target_branch, type: String, desc: 'The target branch'
           optional :state_event, type: String, values: %w[close reopen merge],
                                  desc: 'Status of the merge request'
