@@ -30,7 +30,12 @@ stages:
 - post-test
 - pages
 
-# Prepare and merge knapsack tests
+# Predefined scopes
+.dedicated-runner: &dedicated-runner
+  tags:
+    - gitlab-org
+    - 2gb
+
 .knapsack-state: &knapsack-state
   services: []
   variables:
@@ -45,55 +50,14 @@ stages:
     paths:
     - knapsack/
 
-knapsack:
-  <<: *knapsack-state
-  stage: prepare
-  script:
-    - mkdir -p knapsack/
-    - '[[ -f knapsack/rspec_report.json ]] || echo "{}" > knapsack/rspec_report.json'
-    - '[[ -f knapsack/spinach_report.json ]] || echo "{}" > knapsack/spinach_report.json'
-  tags:
-    - gitlab-org
-    - 2gb
-
-update-knapsack:
-  <<: *knapsack-state
-  stage: post-test
-  script:
-    - scripts/merge-reports knapsack/rspec_report.json knapsack/rspec_node_*.json
-    - scripts/merge-reports knapsack/spinach_report.json knapsack/spinach_node_*.json
-    - rm -f knapsack/*_node_*.json
-  only:
-    - master@gitlab-org/gitlab-ce
-    - master@gitlab-org/gitlab-ee
-    - master@gitlab/gitlabhq
-    - master@gitlab/gitlab-ee
-  tags:
-    - gitlab-org
-    - 2gb
-
 .use-db: &use-db
   services:
     - mysql:latest
     - redis:alpine
 
-setup-test-env:
-  <<: *use-db
-  stage: prepare
-  script:
-    - bundle exec rake assets:precompile 2>/dev/null
-    - bundle exec ruby -Ispec -e 'require "spec_helper" ; TestEnv.init'
-  artifacts:
-    expire_in: 7d
-    paths:
-      - public/assets
-      - tmp/tests
-  tags:
-    - gitlab-org
-    - 2gb
-
 .rspec-knapsack: &rspec-knapsack
   stage: test
+  <<: *dedicated-runner
   <<: *use-db
   script:
     - JOB_NAME=( $CI_BUILD_NAME )
@@ -111,6 +75,7 @@ setup-test-env:
 
 .spinach-knapsack: &spinach-knapsack
   stage: test
+  <<: *dedicated-runner
   <<: *use-db
   script:
     - JOB_NAME=( $CI_BUILD_NAME )
@@ -125,9 +90,44 @@ setup-test-env:
     paths:
     - knapsack/
     - coverage/
-  tags:
-    - gitlab-org
-    - 2gb
+
+# Prepare and merge knapsack tests
+
+knapsack:
+  <<: *knapsack-state
+  <<: *dedicated-runner
+  stage: prepare
+  script:
+    - mkdir -p knapsack/
+    - '[[ -f knapsack/rspec_report.json ]] || echo "{}" > knapsack/rspec_report.json'
+    - '[[ -f knapsack/spinach_report.json ]] || echo "{}" > knapsack/spinach_report.json'
+
+setup-test-env:
+  <<: *use-db
+  <<: *dedicated-runner
+  stage: prepare
+  script:
+    - bundle exec rake assets:precompile 2>/dev/null
+    - bundle exec ruby -Ispec -e 'require "spec_helper" ; TestEnv.init'
+  artifacts:
+    expire_in: 7d
+  paths:
+    - public/assets
+    - tmp/tests
+
+update-knapsack:
+  <<: *knapsack-state
+  <<: *dedicated-runner
+  stage: post-test
+  script:
+    - scripts/merge-reports knapsack/rspec_report.json knapsack/rspec_node_*.json
+    - scripts/merge-reports knapsack/spinach_report.json knapsack/spinach_node_*.json
+    - rm -f knapsack/*_node_*.json
+  only:
+    - master@gitlab-org/gitlab-ce
+    - master@gitlab-org/gitlab-ee
+    - master@gitlab/gitlabhq
+    - master@gitlab/gitlab-ee
 
 rspec 0 20: *rspec-knapsack
 rspec 1 20: *rspec-knapsack
@@ -177,10 +177,12 @@ spinach 9 10: *spinach-knapsack
 
 .rspec-knapsack-ruby21: &rspec-knapsack-ruby21
   <<: *rspec-knapsack
+  <<: *dedicated-runner
   <<: *ruby-21
 
 .spinach-knapsack-ruby21: &spinach-knapsack-ruby21
   <<: *spinach-knapsack
+  <<: *dedicated-runner
   <<: *ruby-21
 
 rspec 0 20 ruby21: *rspec-knapsack-ruby21
@@ -225,12 +227,10 @@ spinach 9 10 ruby21: *spinach-knapsack-ruby21
 
 .exec: &exec
   <<: *ruby-static-analysis
+  <<: *dedicated-runner
   stage: test
   script:
     - bundle exec $CI_BUILD_NAME
-  tags:
-    - gitlab-org
-    - 2gb
 
 rubocop: *exec
 rake haml_lint: *exec
@@ -264,15 +264,14 @@ rake ee_compat_check:
 rake db:migrate:reset:
   stage: test
   <<: *use-db
+  <<: *dedicated-runner
   script:
     - rake db:migrate:reset
-  tags:
-    - gitlab-org
-    - 2gb
 
 rake db:seed_fu:
   stage: test
   <<: *use-db
+  <<: *dedicated-runner
   variables:
     SIZE: "1"
     SETUP_DB: "false"
@@ -286,9 +285,6 @@ rake db:seed_fu:
     expire_in: 1d
     paths:
       - log/development.log
-  tags:
-    - gitlab-org
-    - 2gb
 
 teaspoon:
   cache:
@@ -297,6 +293,7 @@ teaspoon:
       - node_modules/
   stage: test
   <<: *use-db
+  <<: *dedicated-runner
   script:
     - curl --silent --location https://deb.nodesource.com/setup_6.x | bash -
     - apt-get install --assume-yes nodejs
@@ -308,32 +305,26 @@ teaspoon:
     expire_in: 31d
     paths:
     - coverage-javascript/default/
-  tags:
-    - gitlab-org
-    - 2gb
 
 lint-doc:
   stage: test
+  <<: *dedicated-runner
   image: "phusion/baseimage:latest"
   before_script: []
   script:
     - scripts/lint-doc.sh
-  tags:
-    - gitlab-org
-    - 2gb
 
 bundler:check:
- stage: test
- <<: *ruby-static-analysis
- script:
+  stage: test
+  <<: *dedicated-runner
+  <<: *ruby-static-analysis
+  script:
    - bundle check
- tags:
-   - gitlab-org
-   - 2gb
 
 bundler:audit:
   stage: test
   <<: *ruby-static-analysis
+  <<: *dedicated-runner
   only:
     - master@gitlab-org/gitlab-ce
     - master@gitlab-org/gitlab-ee
@@ -341,13 +332,11 @@ bundler:audit:
     - master@gitlab/gitlab-ee
   script:
     - "bundle exec bundle-audit check --update --ignore OSVDB-115941"
-  tags:
-    - gitlab-org
-    - 2gb
 
 migration paths:
   stage: test
   <<: *use-db
+  <<: *dedicated-runner
   variables:
     SETUP_DB: "false"
   only:
@@ -365,13 +354,11 @@ migration paths:
     - git checkout $CI_BUILD_REF
     - source scripts/prepare_build.sh
     - rake db:migrate
-  tags:
-    - gitlab-org
-    - 2gb
 
 coverage:
   stage: post-test
   services: []
+  <<: *dedicated-runner
   variables:
     SETUP_DB: "false"
     USE_BUNDLE_INSTALL: "true"
@@ -383,11 +370,9 @@ coverage:
     paths:
     - coverage/index.html
     - coverage/assets/
-  tags:
-    - gitlab-org
-    - 2gb
 
 lint:javascript:
+  <<: *dedicated-runner
   cache:
     paths:
       - node_modules/
@@ -397,11 +382,9 @@ lint:javascript:
     - npm install
   script:
     - npm --silent run eslint
-  tags:
-    - gitlab-org
-    - 2gb
 
 lint:javascript:report:
+  <<: *dedicated-runner
   cache:
     paths:
       - node_modules/
@@ -417,15 +400,13 @@ lint:javascript:report:
     expire_in: 31d
     paths:
     - eslint-report.html
-  tags:
-    - gitlab-org
-    - 2gb
 
 # Trigger docs build
 # https://gitlab.com/gitlab-com/doc-gitlab-com/blob/master/README.md#deployment-process
 trigger_docs:
   stage: post-test
   image: "alpine"
+  <<: *dedicated-runner
   before_script:
     - apk update && apk add curl
   variables:
@@ -436,14 +417,12 @@ trigger_docs:
     - "curl -X POST -F token=${DOCS_TRIGGER_TOKEN} -F ref=master -F variables[PROJECT]=ce https://gitlab.com/api/v3/projects/1794617/trigger/builds"
   only:
     - master@gitlab-org/gitlab-ce
-  tags:
-    - gitlab-org
-    - 2gb
 
 # Notify slack in the end
 
 notify:slack:
   stage: post-test
+  <<: *dedicated-runner
   variables:
     SETUP_DB: "false"
     USE_BUNDLE_INSTALL: "false"
@@ -455,13 +434,11 @@ notify:slack:
     - tags@gitlab-org/gitlab-ce
     - master@gitlab-org/gitlab-ee
     - tags@gitlab-org/gitlab-ee
-  tags:
-    - gitlab-org
-    - 2gb
 
 pages:
   before_script: []
   stage: pages
+  <<: *dedicated-runner
   dependencies:
     - coverage
     - teaspoon
@@ -476,14 +453,12 @@ pages:
     paths:
       - public
   only:
-    - master
-  tags:
-    - gitlab-org
-    - 2gb
+    - master@gitlab-org/gitlab-ce
 
 # Insurance in case a gem needed by one of our releases gets yanked from
 # rubygems.org in the future.
 cache gems:
+  <<: *dedicated-runner
   only:
     - tags
   variables:
@@ -493,6 +468,5 @@ cache gems:
   artifacts:
     paths:
       - vendor/cache
-  tags:
-    - gitlab-org
-    - 2gb
+  only:
+    - master@gitlab-org/gitlab-ce
