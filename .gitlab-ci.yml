@@ -66,6 +66,17 @@ update-knapsack:
     - master@gitlab/gitlabhq
     - master@gitlab/gitlab-ee
 
+merge-spec-listener:
+  <<: *knapsack-state
+  stage: post-test
+  script:
+    - cat tmp/passed-*.txt >> tmp/passed.txt
+    - cat tmp/failed-*.txt >> tmp/failed.txt
+  artifacts:
+    paths:
+      - tmp/passed.txt
+      - tmp/failed.txt
+
 .use-db: &use-db
   services:
     - mysql:latest
@@ -100,6 +111,8 @@ setup-test-env:
     paths:
     - knapsack/
     - coverage/
+    - tmp/passed*.txt
+    - tmp/failed*.txt
 
 .spinach-knapsack: &spinach-knapsack
   stage: test
