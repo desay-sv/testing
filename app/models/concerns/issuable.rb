@@ -5,6 +5,17 @@
 # Used by Issue, MergeRequest
 #
 module Issuable
+  class MemberValidator < ActiveModel::EachValidator
+    def validate_each(record, attribute, value)
+      user    = User.find_by_id(value)
+      project = record.project
+
+      if user.nil? || !user.can?(:read_project, project)
+        record.errors[:assignee_id] << 'Unauthorized id'
+      end
+    end
+  end
+
   extend ActiveSupport::Concern
   include CacheMarkdownField
   include Participable
@@ -42,6 +53,7 @@ module Issuable
 
     validates :author, presence: true
     validates :title, presence: true, length: { within: 0..255 }
+    validates :assignee_id, presence: true, allow_nil: true, member: true
 
     scope :authored, ->(user) { where(author_id: user) }
     scope :assigned_to, ->(u) { where(assignee_id: u.id)}
