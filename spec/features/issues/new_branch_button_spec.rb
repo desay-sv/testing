@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'Start new branch from an issue', feature: true do
-  let!(:project)   { create(:project) }
+  let!(:project)   { create(:empty_project) }
   let!(:issue)     { create(:issue, project: project) }
   let!(:user)      { create(:user)}
 

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'Merge Request filtering by Milestone', feature: true do
-  let(:project)   { create(:project, :public) }
+  let(:project)   { create(:empty_project, :public) }
   let!(:user)     { create(:user)}
   let(:milestone) { create(:milestone, project: project) }
 

@@ -8,7 +8,7 @@ describe TodoService, services: true do
   let(:guest) { create(:user) }
   let(:admin) { create(:admin) }
   let(:john_doe) { create(:user) }
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:mentions) { [author, assignee, john_doe, member, guest, non_member, admin].map(&:to_reference).join(' ') }
   let(:service) { described_class.new }
 
@@ -65,7 +65,7 @@ describe TodoService, services: true do
 
       context 'when a private group is mentioned' do
         let(:group) { create :group, :private }
-        let(:project) { create :project, :private, group: group }
+        let(:project) { create :empty_project, :private, group: group }
         let(:issue) { create :issue, author: author, project: project, description: group.to_reference }
 
         before do

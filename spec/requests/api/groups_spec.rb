@@ -10,9 +10,9 @@ describe API::API, api: true  do
   let(:avatar_file_path) { File.join(Rails.root, 'spec', 'fixtures', 'banana_sample.gif') }
   let!(:group1) { create(:group, avatar: File.open(avatar_file_path)) }
   let!(:group2) { create(:group, :private) }
-  let!(:project1) { create(:project, namespace: group1) }
-  let!(:project2) { create(:project, namespace: group2) }
-  let!(:project3) { create(:project, namespace: group1, path: 'test', visibility_level: Gitlab::VisibilityLevel::PRIVATE) }
+  let!(:project1) { create(:empty_project, namespace: group1) }
+  let!(:project2) { create(:empty_project, namespace: group2) }
+  let!(:project3) { create(:empty_project, namespace: group1, path: 'test', visibility_level: Gitlab::VisibilityLevel::PRIVATE) }
 
   before do
     group1.add_owner(user1)
@@ -124,7 +124,7 @@ describe API::API, api: true  do
   describe "GET /groups/:id" do
     context "when authenticated as user" do
       it "returns one of user1's groups" do
-        project = create(:project, namespace: group2, path: 'Foo')
+        project = create(:empty_project, namespace: group2, path: 'Foo')
         create(:project_group_link, project: project, group: group1)
 
         get api("/groups/#{group1.id}", user1)
@@ -381,7 +381,7 @@ describe API::API, api: true  do
   end
 
   describe "POST /groups/:id/projects/:project_id" do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
     before(:each) do
       allow_any_instance_of(Projects::TransferService).
         to receive(:execute).and_return(true)

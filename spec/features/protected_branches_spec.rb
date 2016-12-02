@@ -5,7 +5,7 @@ feature 'Projected Branches', feature: true, js: true do
   include WaitForAjax
 
   let(:user) { create(:user, :admin) }
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
 
   before { login_as(user) }
 

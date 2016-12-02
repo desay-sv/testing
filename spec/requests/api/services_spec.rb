@@ -5,7 +5,7 @@ describe API::API, api: true  do
   let(:user) { create(:user) }
   let(:admin) { create(:admin) }
   let(:user2) { create(:user) }
-  let(:project) {create(:project, creator_id: user.id, namespace: user.namespace) }
+  let(:project) {create(:empty_project, creator_id: user.id, namespace: user.namespace) }
 
   Service.available_services_names.each do |service|
     describe "PUT /projects/:id/services/#{service.dasherize}" do

@@ -6,7 +6,7 @@ describe CommitEntity do
   end
 
   let(:request) { double('request') }
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:commit) { project.commit }
 
   subject { entity.as_json }

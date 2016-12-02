@@ -12,7 +12,7 @@ feature 'Projects > Wiki > User creates wiki page', feature: true do
   end
 
   context 'in the user namespace' do
-    let(:project) { create(:project, namespace: user.namespace) }
+    let(:project) { create(:empty_project, namespace: user.namespace) }
 
     context 'when wiki is empty' do
       scenario 'directly from the wiki home page' do
@@ -77,7 +77,7 @@ feature 'Projects > Wiki > User creates wiki page', feature: true do
   end
 
   context 'in a group namespace' do
-    let(:project) { create(:project, namespace: create(:group, :public)) }
+    let(:project) { create(:empty_project, namespace: create(:group, :public)) }
 
     context 'when wiki is empty' do
       scenario 'directly from the wiki home page' do

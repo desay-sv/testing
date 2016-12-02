@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe MergeRequests::RefreshService, services: true do
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:user) { create(:user) }
   let(:service) { MergeRequests::RefreshService }
 
@@ -11,7 +11,7 @@ describe MergeRequests::RefreshService, services: true do
       group = create(:group)
       group.add_owner(@user)
 
-      @project = create(:project, namespace: group)
+      @project = create(:empty_project, namespace: group)
       @fork_project = Projects::ForkService.new(@project, @user).execute
       @merge_request = create(:merge_request,
                               source_project: @project,
@@ -209,7 +209,7 @@ describe MergeRequests::RefreshService, services: true do
 
       context 'when the merge request is sourced from a different project' do
         it 'creates a `MergeRequestsClosingIssues` record for each issue closed by a commit' do
-          forked_project = create(:project)
+          forked_project = create(:empty_project)
           create(:forked_project_link, forked_to_project: forked_project, forked_from_project: @project)
 
           merge_request = create(:merge_request,

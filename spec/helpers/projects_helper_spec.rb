@@ -10,7 +10,7 @@ describe ProjectsHelper do
   end
 
   describe "can_change_visibility_level?" do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
     let(:user) { create(:project_member, :reporter, user: create(:user), project: project).user }
     let(:fork_project) { Projects::ForkService.new(project, user).execute }
 
@@ -46,7 +46,7 @@ describe ProjectsHelper do
   end
 
   describe "readme_cache_key" do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
 
     before do
       helper.instance_variable_set(:@project, project)
@@ -97,7 +97,7 @@ describe ProjectsHelper do
   end
 
   describe '#license_short_name' do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
 
     context 'when project.repository has a license_key' do
       it 'returns the nickname of the license if present' do
@@ -123,7 +123,7 @@ describe ProjectsHelper do
   end
 
   describe '#sanitized_import_error' do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
 
     before do
       allow(project).to receive(:repository_storage_path).and_return('/base/repo/path')

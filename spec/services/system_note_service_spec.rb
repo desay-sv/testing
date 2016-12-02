@@ -3,7 +3,7 @@ require 'spec_helper'
 describe SystemNoteService, services: true do
   include Gitlab::Routing.url_helpers
 
-  let(:project)  { create(:project) }
+  let(:project)  { create(:empty_project) }
   let(:author)   { create(:user) }
   let(:noteable) { create(:issue, project: project) }
 
@@ -331,7 +331,7 @@ describe SystemNoteService, services: true do
 
       describe 'note_body' do
         context 'cross-project' do
-          let(:project2)  { create(:project) }
+          let(:project2)  { create(:empty_project) }
           let(:mentioner) { create(:issue, project: project2) }
 
           context 'from Commit' do
@@ -511,7 +511,7 @@ describe SystemNoteService, services: true do
   end
 
   describe '.noteable_moved' do
-    let(:new_project) { create(:project) }
+    let(:new_project) { create(:empty_project) }
     let(:new_noteable) { create(:issue, project: new_project) }
 
     subject do

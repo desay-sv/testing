@@ -55,7 +55,7 @@ feature 'Environments page', :feature, :js do
     end
 
     context 'with deployments' do
-      given(:project) { create(:project) }
+      given(:project) { create(:empty_project) }
 
       given(:deployment) do
         create(:deployment, environment: environment,

@@ -5,7 +5,7 @@ describe API::API, api: true do
 
   let(:user)        { create(:user) }
   let(:non_member)  { create(:user) }
-  let(:project)     { create(:project, creator_id: user.id) }
+  let(:project)     { create(:empty_project, creator_id: user.id) }
 
   let!(:pipeline) do
     create(:ci_empty_pipeline, project: project, sha: project.commit.id,

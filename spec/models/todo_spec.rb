@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Todo, models: true do
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:commit) { project.commit }
   let(:issue) { create(:issue) }
 

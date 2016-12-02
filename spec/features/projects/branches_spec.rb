@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'Branches', feature: true do
-  let(:project) { create(:project, :public) }
+  let(:project) { create(:empty_project, :public) }
   let(:repository) { project.repository }
 
   context 'logged in' do

@@ -16,7 +16,7 @@ describe "Pipelines" do
 
     [:all, :running, :branches].each do |scope|
       context "displaying #{scope}" do
-        let(:project) { create(:project) }
+        let(:project) { create(:empty_project) }
 
         before { visit namespace_project_pipelines_path(project.namespace, project, scope: scope) }
 
@@ -153,7 +153,7 @@ describe "Pipelines" do
   end
 
   describe 'GET /:project/pipelines/:id' do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
     let(:pipeline) { create(:ci_pipeline, project: project, ref: 'master', sha: project.commit.id) }
 
     before do
@@ -212,7 +212,7 @@ describe "Pipelines" do
   end
 
   describe 'POST /:project/pipelines' do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
 
     before { visit new_namespace_project_pipeline_path(project.namespace, project) }
 
@@ -243,7 +243,7 @@ describe "Pipelines" do
   end
 
   describe 'Create pipelines', feature: true do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
 
     before do
       visit new_namespace_project_pipeline_path(project.namespace, project)

@@ -4,7 +4,7 @@ describe 'Issues Feed', feature: true  do
   describe 'GET /issues' do
     let!(:user)     { create(:user) }
     let!(:group)    { create(:group) }
-    let!(:project)  { create(:project) }
+    let!(:project)  { create(:empty_project) }
     let!(:issue)    { create(:issue, author: user, project: project) }
 
     before do

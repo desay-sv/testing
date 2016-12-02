@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Gitlab::ReferenceExtractor, lib: true do
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
 
   before { project.team << [project.creator, :developer] }
 
@@ -112,7 +112,7 @@ describe Gitlab::ReferenceExtractor, lib: true do
   end
 
   context 'with a project with an underscore' do
-    let(:other_project) { create(:project, path: 'test_project') }
+    let(:other_project) { create(:empty_project, path: 'test_project') }
     let(:issue) { create(:issue, project: other_project) }
 
     before do

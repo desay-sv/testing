@@ -4,7 +4,7 @@ describe API::API, api: true  do
   include ApiHelpers
   let(:user) { create(:user) }
   let(:key) { create(:key, user: user) }
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:secret_token) { Gitlab::Shell.secret_token }
 
   describe "GET /internal/check", no_db: true do
@@ -239,7 +239,7 @@ describe API::API, api: true  do
     end
 
     context "blocked user" do
-      let(:personal_project) { create(:project, namespace: user.namespace) }
+      let(:personal_project) { create(:empty_project, namespace: user.namespace) }
 
       before do
         user.block
@@ -265,7 +265,7 @@ describe API::API, api: true  do
     end
 
     context "archived project" do
-      let(:personal_project) { create(:project, namespace: user.namespace) }
+      let(:personal_project) { create(:empty_project, namespace: user.namespace) }
 
       before do
         project.team << [user, :developer]

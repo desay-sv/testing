@@ -4,7 +4,7 @@ feature 'Project group links', feature: true, js: true do
   include Select2Helper
 
   let(:master) { create(:user) }
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let!(:group) { create(:group) }
 
   background do

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'projects/commit/_commit_box.html.haml' do
   include Devise::Test::ControllerHelpers
 
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
 
   before do
     assign(:project, project)

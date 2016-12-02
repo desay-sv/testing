@@ -5,7 +5,7 @@ describe 'Issues', feature: true do
   include SortingHelper
   include WaitForAjax
 
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
 
   before do
     login_as :user
@@ -370,7 +370,7 @@ describe 'Issues', feature: true do
   end
 
   describe 'when I want to reset my incoming email token' do
-    let(:project1) { create(:project, namespace: @user.namespace) }
+    let(:project1) { create(:empty_project, namespace: @user.namespace) }
     let(:issue) { create(:issue, project: project1) }
 
     before do

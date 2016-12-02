@@ -12,7 +12,7 @@ describe "Dashboard Feed", feature: true  do
     end
 
     context 'feed content' do
-      let(:project) { create(:project) }
+      let(:project) { create(:empty_project) }
       let(:issue) { create(:issue, project: project, author: user, description: '') }
       let(:note) { create(:note, noteable: issue, author: user, note: 'Bug confirmed', project: project) }
 

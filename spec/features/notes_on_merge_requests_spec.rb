@@ -5,7 +5,7 @@ describe 'Comments', feature: true do
   include WaitForAjax
 
   describe 'On a merge request', js: true, feature: true do
-    let!(:project) { create(:project) }
+    let!(:project) { create(:empty_project) }
     let!(:merge_request) do
       create(:merge_request, source_project: project, target_project: project)
     end
@@ -137,8 +137,8 @@ describe 'Comments', feature: true do
 
   describe 'Handles cross-project system notes', js: true, feature: true do
     let(:user) { create(:user) }
-    let(:project) { create(:project, :public) }
-    let(:project2) { create(:project, :private) }
+    let(:project) { create(:empty_project, :public) }
+    let(:project2) { create(:empty_project, :private) }
     let(:issue) { create(:issue, project: project2) }
     let(:merge_request) { create(:merge_request, source_project: project, source_branch: 'markdown') }
     let!(:note) { create(:note_on_merge_request, :system, noteable: merge_request, project: project, note: "mentioned in #{issue.to_reference(project)}") }

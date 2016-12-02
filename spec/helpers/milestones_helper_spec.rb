@@ -21,7 +21,7 @@ describe MilestonesHelper do
   end
 
   describe '#milestone_counts' do
-    let(:project) { FactoryGirl.create(:project) }
+    let(:project) { FactoryGirl.create(:empty_project) }
     let(:counts) { helper.milestone_counts(project.milestones) }
 
     context 'when there are milestones' do

@@ -9,7 +9,7 @@ describe AnalyticsMergeRequestSerializer do
 
   let(:user) { create(:user) }
   let(:json) { serializer.as_json }
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:resource) do
     {
       total_time: "172802.724419",

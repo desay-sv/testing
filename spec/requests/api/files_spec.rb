@@ -3,7 +3,7 @@ require 'spec_helper'
 describe API::API, api: true  do
   include ApiHelpers
   let(:user) { create(:user) }
-  let!(:project) { create(:project, namespace: user.namespace ) }
+  let!(:project) { create(:empty_project, namespace: user.namespace ) }
   let(:file_path) { 'files/ruby/popen.rb' }
   let(:author_email) { FFaker::Internet.email }
 

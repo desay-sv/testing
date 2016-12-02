@@ -5,7 +5,7 @@ feature 'Merge Requests > User uses slash commands', feature: true, js: true do
   include WaitForAjax
 
   let(:user) { create(:user) }
-  let(:project) { create(:project, :public) }
+  let(:project) { create(:empty_project, :public) }
   let(:merge_request) { create(:merge_request, source_project: project) }
   let!(:milestone) { create(:milestone, project: project, title: 'ASAP') }
 

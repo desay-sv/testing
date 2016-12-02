@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Gitlab::Checks::ChangeAccess, lib: true do
   describe '#exec' do
     let(:user) { create(:user) }
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
     let(:user_access) { Gitlab::UserAccess.new(user, project: project) }
     let(:changes) do
       {

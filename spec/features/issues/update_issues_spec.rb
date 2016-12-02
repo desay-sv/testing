@@ -3,7 +3,7 @@ require 'rails_helper'
 feature 'Multiple issue updating from issues#index', feature: true do
   include WaitForAjax
 
-  let!(:project)   { create(:project) }
+  let!(:project)   { create(:empty_project) }
   let!(:issue)     { create(:issue, project: project) }
   let!(:user)      { create(:user)}
 

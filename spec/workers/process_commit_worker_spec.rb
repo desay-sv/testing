@@ -3,7 +3,7 @@ require 'spec_helper'
 describe ProcessCommitWorker do
   let(:worker) { described_class.new }
   let(:user) { create(:user) }
-  let(:project) { create(:project, :public) }
+  let(:project) { create(:empty_project, :public) }
   let(:issue) { create(:issue, project: project, author: user) }
   let(:commit) { project.commit }
 

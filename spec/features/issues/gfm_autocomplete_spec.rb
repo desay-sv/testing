@@ -3,7 +3,7 @@ require 'rails_helper'
 feature 'GFM autocomplete', feature: true, js: true do
   include WaitForAjax
   let(:user)    { create(:user) }
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:issue)   { create(:issue, project: project) }
 
   before do

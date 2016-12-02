@@ -26,7 +26,7 @@ describe SlackService, models: true do
 
   describe "Execute" do
     let(:user)    { create(:user) }
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
     let(:username) { 'slack_username' }
     let(:channel)  { 'slack_channel' }
 
@@ -195,7 +195,7 @@ describe SlackService, models: true do
 
   describe "Note events" do
     let(:user) { create(:user) }
-    let(:project) { create(:project, creator_id: user.id) }
+    let(:project) { create(:empty_project, creator_id: user.id) }
 
     before do
       allow(slack).to receive_messages(
@@ -268,7 +268,7 @@ describe SlackService, models: true do
 
   describe 'Pipeline events' do
     let(:user) { create(:user) }
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
 
     let(:pipeline) do
       create(:ci_pipeline,

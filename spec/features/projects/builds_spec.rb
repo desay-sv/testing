@@ -3,7 +3,7 @@ require 'tempfile'
 
 feature 'Builds', :feature do
   let(:user) { create(:user) }
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:pipeline) { create(:ci_pipeline, project: project) }
 
   let(:build) { create(:ci_build, :trace, pipeline: pipeline) }

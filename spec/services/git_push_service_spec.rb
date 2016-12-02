@@ -4,7 +4,7 @@ describe GitPushService, services: true do
   include RepoHelpers
 
   let(:user)          { create :user }
-  let(:project)       { create :project }
+  let(:project)       { create :empty_project }
 
   before do
     project.team << [user, :master]

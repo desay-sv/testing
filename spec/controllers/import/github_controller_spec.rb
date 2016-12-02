@@ -73,7 +73,7 @@ describe Import::GithubController do
     end
 
     it "assigns variables" do
-      @project = create(:project, import_type: 'github', creator_id: user.id)
+      @project = create(:empty_project, import_type: 'github', creator_id: user.id)
       stub_client(repos: [@repo, @org_repo], orgs: [@org], org_repos: [@org_repo])
 
       get :status
@@ -83,7 +83,7 @@ describe Import::GithubController do
     end
 
     it "does not show already added project" do
-      @project = create(:project, import_type: 'github', creator_id: user.id, import_source: 'asd/vim')
+      @project = create(:empty_project, import_type: 'github', creator_id: user.id, import_source: 'asd/vim')
       stub_client(repos: [@repo], orgs: [])
 
       get :status

@@ -4,7 +4,7 @@ feature 'Multiple merge requests updating from merge_requests#index', feature: t
   include WaitForAjax
 
   let!(:user)    { create(:user)}
-  let!(:project) { create(:project) }
+  let!(:project) { create(:empty_project) }
   let!(:merge_request) { create(:merge_request, source_project: project, target_project: project) }
 
   before do

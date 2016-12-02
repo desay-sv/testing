@@ -13,7 +13,7 @@ describe Gitlab::Email::Handler::CreateIssueHandler, lib: true do
   let(:email_raw) { fixture_file('emails/valid_new_issue.eml') }
   let(:namespace) { create(:namespace, path: 'gitlabhq') }
 
-  let!(:project)  { create(:project, :public, namespace: namespace) }
+  let!(:project)  { create(:empty_project, :public, namespace: namespace) }
   let!(:user) do
     create(
       :user,
@@ -69,7 +69,7 @@ describe Gitlab::Email::Handler::CreateIssueHandler, lib: true do
     end
 
     context "when project is private" do
-      let(:project) { create(:project, :private, namespace: namespace) }
+      let(:project) { create(:empty_project, :private, namespace: namespace) }
 
       it "raises a ProjectNotFound if the user is not a member" do
         expect { receiver.execute }.to raise_error(Gitlab::Email::ProjectNotFound)

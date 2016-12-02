@@ -3,7 +3,7 @@ require 'spec_helper'
 describe DeleteMergedBranchesWorker do
   subject(:worker) { described_class.new }
 
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
 
   describe "#perform" do
     it "calls DeleteMergedBranchesService" do

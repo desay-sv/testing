@@ -12,7 +12,7 @@ describe "User Feed", feature: true  do
     end
 
     context 'feed content' do
-      let(:project) { create(:project) }
+      let(:project) { create(:empty_project) }
       let(:issue) do
         create(:issue,
                project: project,

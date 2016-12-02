@@ -4,7 +4,7 @@ feature 'Setup Mattermost slash commands', feature: true do
   include WaitForAjax
 
   let(:user) { create(:user) }
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:service) { project.create_mattermost_slash_commands_service }
 
   before do

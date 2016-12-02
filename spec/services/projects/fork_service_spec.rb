@@ -5,7 +5,7 @@ describe Projects::ForkService, services: true do
     before do
       @from_namespace = create(:namespace)
       @from_user = create(:user, namespace: @from_namespace )
-      @from_project = create(:project,
+      @from_project = create(:empty_project,
                              creator_id: @from_user.id,
                              namespace: @from_namespace,
                              star_count: 107,
@@ -41,7 +41,7 @@ describe Projects::ForkService, services: true do
 
     context 'project already exists' do
       it "fails due to validation, not transaction failure" do
-        @existing_project = create(:project, creator_id: @to_user.id, name: @from_project.name, namespace: @to_namespace)
+        @existing_project = create(:empty_project, creator_id: @to_user.id, name: @from_project.name, namespace: @to_namespace)
         @to_project = fork_project(@from_project, @to_user)
         expect(@existing_project).to be_persisted
 
@@ -91,7 +91,7 @@ describe Projects::ForkService, services: true do
     before do
       @group_owner = create(:user)
       @developer   = create(:user)
-      @project     = create(:project, creator_id: @group_owner.id,
+      @project     = create(:empty_project, creator_id: @group_owner.id,
                                       star_count: 777,
                                       description: 'Wow, such a cool project!')
       @group = create(:group)
@@ -126,7 +126,7 @@ describe Projects::ForkService, services: true do
 
     context 'project already exists in group' do
       it 'fails due to validation, not transaction failure' do
-        existing_project = create(:project, name: @project.name,
+        existing_project = create(:empty_project, name: @project.name,
                                             namespace: @group)
         to_project = fork_project(@project, @group_owner, @opts)
         expect(existing_project.persisted?).to be_truthy

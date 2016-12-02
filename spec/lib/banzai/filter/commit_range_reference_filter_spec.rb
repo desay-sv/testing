@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Banzai::Filter::CommitRangeReferenceFilter, lib: true do
   include FilterSpecHelper
 
-  let(:project) { create(:project, :public) }
+  let(:project) { create(:empty_project, :public) }
   let(:commit1) { project.commit("HEAD~2") }
   let(:commit2) { project.commit }
 
@@ -102,7 +102,7 @@ describe Banzai::Filter::CommitRangeReferenceFilter, lib: true do
 
   context 'cross-project reference' do
     let(:namespace) { create(:namespace, name: 'cross-reference') }
-    let(:project2)  { create(:project, :public, namespace: namespace) }
+    let(:project2)  { create(:empty_project, :public, namespace: namespace) }
     let(:reference) { range.to_reference(project) }
 
     before do
@@ -134,7 +134,7 @@ describe Banzai::Filter::CommitRangeReferenceFilter, lib: true do
 
   context 'cross-project URL reference' do
     let(:namespace) { create(:namespace, name: 'cross-reference') }
-    let(:project2)  { create(:project, :public, namespace: namespace) }
+    let(:project2)  { create(:empty_project, :public, namespace: namespace) }
     let(:range)  { CommitRange.new("#{commit1.id}...master", project) }
     let(:reference) { urls.namespace_project_compare_url(project2.namespace, project2, from: commit1.id, to: 'master') }
 

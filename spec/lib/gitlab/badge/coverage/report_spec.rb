@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Gitlab::Badge::Coverage::Report do
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:job_name) { nil }
 
   let(:badge) do

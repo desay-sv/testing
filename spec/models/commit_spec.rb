@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Commit, models: true do
-  let(:project) { create(:project, :public) }
+  let(:project) { create(:empty_project, :public) }
   let(:commit)  { project.commit }
 
   describe 'modules' do
@@ -125,7 +125,7 @@ eos
 
   describe '#closes_issues' do
     let(:issue) { create :issue, project: project }
-    let(:other_project) { create :project, :public }
+    let(:other_project) { create :empty_project, :public }
     let(:other_issue) { create :issue, project: other_project }
     let(:commiter) { create :user }
 
@@ -148,7 +148,7 @@ eos
   end
 
   it_behaves_like 'a mentionable' do
-    subject { create(:project).commit }
+    subject { create(:empty_project).commit }
 
     let(:author) { create(:user, email: subject.author_email) }
     let(:backref_text) { "commit #{subject.id}" }

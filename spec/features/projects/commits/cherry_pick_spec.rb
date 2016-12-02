@@ -2,7 +2,7 @@ require 'spec_helper'
 include WaitForAjax
 
 describe 'Cherry-pick Commits' do
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:master_pickable_commit)  { project.commit('7d3b0f7cff5f37573aea97cebfd5692ea1689924') }
   let(:master_pickable_merge)  { project.commit('e56497bb5f03a90a51293fc6d516788730953899') }
 

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe GitlabMarkdownHelper do
   include ApplicationHelper
 
-  let!(:project) { create(:project) }
+  let!(:project) { create(:empty_project) }
 
   let(:user)          { create(:user, username: 'gfm') }
   let(:commit)        { project.commit }
@@ -44,7 +44,7 @@ describe GitlabMarkdownHelper do
 
     describe "override default project" do
       let(:actual) { issue.to_reference }
-      let(:second_project) { create(:project, :public) }
+      let(:second_project) { create(:empty_project, :public) }
       let(:second_issue) { create(:issue, project: second_project) }
 
       it 'links to the issue' do

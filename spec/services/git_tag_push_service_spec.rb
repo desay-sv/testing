@@ -4,7 +4,7 @@ describe GitTagPushService, services: true do
   include RepoHelpers
 
   let(:user) { create :user }
-  let(:project) { create :project }
+  let(:project) { create :empty_project }
   let(:service) { GitTagPushService.new(project, user, oldrev: oldrev, newrev: newrev, ref: ref) }
 
   let(:oldrev) { Gitlab::Git::BLANK_SHA }

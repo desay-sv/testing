@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe 'New/edit merge request', feature: true, js: true do
-  let!(:project)   { create(:project, visibility_level: Gitlab::VisibilityLevel::PUBLIC) }
-  let(:fork_project) { create(:project, forked_from_project: project) }
+  let!(:project)   { create(:empty_project, visibility_level: Gitlab::VisibilityLevel::PUBLIC) }
+  let(:fork_project) { create(:empty_project, forked_from_project: project) }
   let!(:user)      { create(:user)}
   let!(:milestone) { create(:milestone, project: project) }
   let!(:label)     { create(:label, project: project) }

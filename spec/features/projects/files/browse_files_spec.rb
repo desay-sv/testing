@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature 'user checks git blame', feature: true do
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:user) { create(:user) }
 
   before do

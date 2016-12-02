@@ -12,7 +12,7 @@ describe 'Git HTTP requests', lib: true do
 
   describe "User with no identities" do
     let(:user)    { create(:user) }
-    let(:project) { create(:project, path: 'project.git-project') }
+    let(:project) { create(:empty_project, path: 'project.git-project') }
 
     context "when the project doesn't exist" do
       context "when no authentication is provided" do
@@ -119,7 +119,7 @@ describe 'Git HTTP requests', lib: true do
         context 'when the repo is public' do
           context 'but the repo is disabled' do
             it 'does not allow to clone the repo' do
-              project = create(:project, :public, repository_access_level: ProjectFeature::DISABLED)
+              project = create(:empty_project, :public, repository_access_level: ProjectFeature::DISABLED)
 
               download("#{project.path_with_namespace}.git", {}) do |response|
                 expect(response).to have_http_status(:unauthorized)
@@ -129,7 +129,7 @@ describe 'Git HTTP requests', lib: true do
 
           context 'but the repo is enabled' do
             it 'allows to clone the repo' do
-              project = create(:project, :public, repository_access_level: ProjectFeature::ENABLED)
+              project = create(:empty_project, :public, repository_access_level: ProjectFeature::ENABLED)
 
               download("#{project.path_with_namespace}.git", {}) do |response|
                 expect(response).to have_http_status(:ok)
@@ -139,7 +139,7 @@ describe 'Git HTTP requests', lib: true do
 
           context 'but only project members are allowed' do
             it 'does not allow to clone the repo' do
-              project = create(:project, :public, repository_access_level: ProjectFeature::PRIVATE)
+              project = create(:empty_project, :public, repository_access_level: ProjectFeature::PRIVATE)
 
               download("#{project.path_with_namespace}.git", {}) do |response|
                 expect(response).to have_http_status(:unauthorized)
@@ -532,7 +532,7 @@ describe 'Git HTTP requests', lib: true do
       end
 
       context "when the project exists" do
-        let(:project) { create(:project, path: 'project.git-project') }
+        let(:project) { create(:empty_project, path: 'project.git-project') }
 
         before do
           project.team << [user, :master]

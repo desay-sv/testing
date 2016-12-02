@@ -13,7 +13,7 @@ describe Mentionable do
   end
 
   describe 'references' do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
     let(:mentionable) { Example.new }
 
     it 'excludes JIRA references' do
@@ -75,7 +75,7 @@ describe Issue, "Mentionable" do
   end
 
   describe '#create_cross_references!' do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
     let(:author)  { build(:user) }
     let(:commit)  { project.commit }
     let(:commit2) { project.commit }
@@ -92,7 +92,7 @@ describe Issue, "Mentionable" do
   end
 
   describe '#create_new_cross_references!' do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
     let(:author)  { create(:author) }
     let(:issues)  { create_list(:issue, 2, project: project, author: author) }
 

@@ -73,6 +73,7 @@ merge-spec-listener:
     - cat tmp/passed-*.txt >> tmp/passed.txt
     - cat tmp/failed-*.txt >> tmp/failed.txt
   artifacts:
+    when: always
     paths:
       - tmp/passed.txt
       - tmp/failed.txt

@@ -17,7 +17,7 @@ describe Deployment, models: true do
   it { is_expected.to validate_presence_of(:sha) }
 
   describe '#includes_commit?' do
-    let(:project)     { create(:project) }
+    let(:project)     { create(:empty_project) }
     let(:environment) { create(:environment, project: project) }
     let(:deployment) do
       create(:deployment, environment: environment, sha: project.commit.id)

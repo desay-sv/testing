@@ -24,7 +24,7 @@ describe ExtractsPath, lib: true do
     let(:params) { { path: sample_commit[:line_code_path], ref: ref } }
 
     before do
-      @project = create(:project)
+      @project = create(:empty_project)
     end
 
     it "log tree path has no escape sequences" do

@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe Projects::RepositoriesController do
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
 
   describe "GET archive" do
     context 'as a guest' do

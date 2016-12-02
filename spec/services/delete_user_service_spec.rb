@@ -5,7 +5,7 @@ describe DeleteUserService, services: true do
     let!(:user)         { create(:user) }
     let!(:current_user) { create(:user) }
     let!(:namespace)    { create(:namespace, owner: user) }
-    let!(:project)      { create(:project, namespace: namespace) }
+    let!(:project)      { create(:empty_project, namespace: namespace) }
 
     context 'no options are given' do
       it 'deletes the user' do

@@ -378,7 +378,7 @@ describe Notify do
     end
 
     describe 'project was moved' do
-      let(:project) { create(:project) }
+      let(:project) { create(:empty_project) }
       let(:user) { create(:user) }
       subject { Notify.project_was_moved_email(project.id, user.id, "gitlab/gitlab") }
 
@@ -509,7 +509,7 @@ describe Notify do
     end
 
     describe 'project invitation' do
-      let(:project) { create(:project) }
+      let(:project) { create(:empty_project) }
       let(:master) { create(:user).tap { |u| project.team << [u, :master] } }
       let(:project_member) { invite_to_project(project, inviter: master) }
 
@@ -529,7 +529,7 @@ describe Notify do
     end
 
     describe 'project invitation accepted' do
-      let(:project) { create(:project) }
+      let(:project) { create(:empty_project) }
       let(:invited_user) { create(:user, name: 'invited user') }
       let(:master) { create(:user).tap { |u| project.team << [u, :master] } }
       let(:project_member) do
@@ -554,7 +554,7 @@ describe Notify do
     end
 
     describe 'project invitation declined' do
-      let(:project) { create(:project) }
+      let(:project) { create(:empty_project) }
       let(:master) { create(:user).tap { |u| project.team << [u, :master] } }
       let(:project_member) do
         invitee = invite_to_project(project, inviter: master)
@@ -1174,7 +1174,7 @@ describe Notify do
   end
 
   describe 'HTML emails setting' do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
     let(:user) { create(:user) }
     let(:multipart_mail) { Notify.project_was_moved_email(project.id, user.id, "gitlab/gitlab") }
 

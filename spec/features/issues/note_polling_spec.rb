@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature 'Issue notes polling' do
-  let!(:project) { create(:project, :public) }
+  let!(:project) { create(:empty_project, :public) }
   let!(:issue) { create(:issue, project: project) }
 
   background do

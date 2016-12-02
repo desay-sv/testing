@@ -7,7 +7,7 @@ feature 'Expand and collapse diffs', js: true, feature: true do
 
   before do
     login_as :admin
-    project = create(:project)
+    project = create(:empty_project)
 
     # Ensure that undiffable.md is in .gitattributes
     project.repository.copy_gitattributes(branch)

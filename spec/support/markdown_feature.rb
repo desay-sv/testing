@@ -23,7 +23,7 @@ class MarkdownFeature
   # Direct references ----------------------------------------------------------
 
   def project
-    @project ||= create(:project).tap do |project|
+    @project ||= create(:empty_project).tap do |project|
       project.team << [user, :master]
     end
   end
@@ -80,7 +80,7 @@ class MarkdownFeature
   def xproject
     @xproject ||= begin
       namespace = create(:namespace, name: 'cross-reference')
-      create(:project, namespace: namespace) do |project|
+      create(:empty_project, namespace: namespace) do |project|
         project.team << [user, :developer]
       end
     end

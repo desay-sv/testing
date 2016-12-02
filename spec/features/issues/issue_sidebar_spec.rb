@@ -3,7 +3,7 @@ require 'rails_helper'
 feature 'Issue Sidebar', feature: true do
   include WaitForAjax
 
-  let(:project) { create(:project, :public) }
+  let(:project) { create(:empty_project, :public) }
   let(:issue) { create(:issue, project: project) }
   let!(:user) { create(:user)}
 

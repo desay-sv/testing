@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature 'project commit builds' do
-  given(:project) { create(:project) }
+  given(:project) { create(:empty_project) }
 
   background do
     user = create(:user)

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe FileUploader do
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
 
   before do
     @previous_enable_processing = FileUploader.enable_processing

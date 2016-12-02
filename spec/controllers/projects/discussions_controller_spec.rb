@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Projects::DiscussionsController do
   let(:user)    { create(:user) }
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:merge_request) { create(:merge_request, source_project: project) }
   let(:note) { create(:diff_note_on_merge_request, noteable: merge_request, project: project) }
   let(:discussion) { note.discussion }

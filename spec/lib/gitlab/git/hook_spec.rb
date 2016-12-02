@@ -3,7 +3,7 @@ require 'fileutils'
 
 describe Gitlab::Git::Hook, lib: true do
   describe "#trigger" do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
     let(:user) { create(:user) }
 
     def create_hook(name)

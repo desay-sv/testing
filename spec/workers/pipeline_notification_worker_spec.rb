@@ -9,7 +9,7 @@ describe PipelineNotificationWorker do
            status: status)
   end
 
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:user) { create(:user) }
   let(:pusher) { user }
   let(:watcher) { pusher }

@@ -3,7 +3,7 @@ require 'rails_helper'
 feature 'Issue filtering by Labels', feature: true, js: true do
   include WaitForAjax
 
-  let(:project) { create(:project, :public) }
+  let(:project) { create(:empty_project, :public) }
   let!(:user)   { create(:user) }
   let!(:label)  { create(:label, project: project) }
 

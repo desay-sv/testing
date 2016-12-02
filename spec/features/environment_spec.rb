@@ -112,7 +112,7 @@ feature 'Environment', :feature do
   end
 
   feature 'auto-close environment when branch is deleted' do
-    given(:project) { create(:project) }
+    given(:project) { create(:empty_project) }
 
     given!(:environment) do
       create(:environment, :with_review_app, project: project,

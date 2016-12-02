@@ -149,7 +149,7 @@ describe Gitlab::ImportExport::ProjectTreeSaver, services: true do
     release = create(:release)
     group = create(:group)
 
-    project = create(:project,
+    project = create(:empty_project,
                      :public,
                      issues: [issue],
                      snippets: [snippet],

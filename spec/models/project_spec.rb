@@ -127,7 +127,7 @@ describe Project, models: true do
   end
 
   describe 'validation' do
-    let!(:project) { create(:project) }
+    let!(:project) { create(:empty_project) }
 
     it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_uniqueness_of(:name).scoped_to(:namespace_id) }
@@ -160,7 +160,7 @@ describe Project, models: true do
 
       context "when the new wiki path has been used by the path of other Project" do
         it 'has an error on the name attribute' do
-          project_with_wiki_suffix = create(:project, path: 'foo.wiki')
+          project_with_wiki_suffix = create(:empty_project, path: 'foo.wiki')
           new_project = build_stubbed(:project, namespace_id: project_with_wiki_suffix.namespace_id, path: 'foo')
 
           expect(new_project).not_to be_valid
@@ -266,7 +266,7 @@ describe Project, models: true do
   end
 
   describe '#repository_storage_path' do
-    let(:project) { create(:project, repository_storage: 'custom') }
+    let(:project) { create(:empty_project, repository_storage: 'custom') }
 
     before do
       FileUtils.mkdir('tmp/tests/custom_repositories')
@@ -334,7 +334,7 @@ describe Project, models: true do
   describe 'last_activity methods' do
     let(:timestamp) { 2.hours.ago }
     # last_activity_at gets set to created_at upon creation
-    let(:project) { create(:project, created_at: timestamp, updated_at: timestamp) }
+    let(:project) { create(:empty_project, created_at: timestamp, updated_at: timestamp) }
 
     describe 'last_activity' do
       it 'alias last_activity to last_event' do
@@ -418,7 +418,7 @@ describe Project, models: true do
     context 'with namespace' do
       before do
         @group = create :group, name: 'gitlab'
-        @project = create(:project, name: 'gitlabhq', namespace: @group)
+        @project = create(:empty_project, name: 'gitlabhq', namespace: @group)
       end
 
       it { expect(Project.find_with_namespace('gitlab/gitlabhq')).to eq(@project) }
@@ -447,7 +447,7 @@ describe Project, models: true do
     context 'with namespace' do
       before do
         @group = create :group, name: 'gitlab'
-        @project = create(:project, name: 'gitlabhq', namespace: @group)
+        @project = create(:empty_project, name: 'gitlabhq', namespace: @group)
       end
 
       it { expect(@project.to_param).to eq('gitlabhq') }
@@ -473,7 +473,7 @@ describe Project, models: true do
   end
 
   describe '#repository' do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
 
     it 'returns valid repo' do
       expect(project.repository).to be_kind_of(Repository)
@@ -481,7 +481,7 @@ describe Project, models: true do
   end
 
   describe '#default_issues_tracker?' do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
     let(:ext_project) { create(:redmine_project) }
 
     it "is true if used internal tracker" do
@@ -494,7 +494,7 @@ describe Project, models: true do
   end
 
   describe '#external_issue_tracker' do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
     let(:ext_project) { create(:redmine_project) }
 
     context 'on existing projects with no value for has_external_issue_tracker' do
@@ -529,7 +529,7 @@ describe Project, models: true do
   end
 
   describe '#cache_has_external_issue_tracker' do
-    let(:project) { create(:project, has_external_issue_tracker: nil) }
+    let(:project) { create(:empty_project, has_external_issue_tracker: nil) }
 
     it 'stores true if there is any external_issue_tracker' do
       services = double(:service, external_issue_trackers: [RedmineService.new])
@@ -551,9 +551,9 @@ describe Project, models: true do
   end
 
   describe '#has_wiki?' do
-    let(:no_wiki_project)       { create(:project, wiki_access_level: ProjectFeature::DISABLED, has_external_wiki: false) }
-    let(:wiki_enabled_project)  { create(:project) }
-    let(:external_wiki_project) { create(:project, has_external_wiki: true) }
+    let(:no_wiki_project)       { create(:empty_project, wiki_access_level: ProjectFeature::DISABLED, has_external_wiki: false) }
+    let(:wiki_enabled_project)  { create(:empty_project) }
+    let(:external_wiki_project) { create(:empty_project, has_external_wiki: true) }
 
     it 'returns true if project is wiki enabled or has external wiki' do
       expect(wiki_enabled_project).to have_wiki
@@ -563,7 +563,7 @@ describe Project, models: true do
   end
 
   describe '#external_wiki' do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
 
     context 'with an active external wiki' do
       before do
@@ -614,7 +614,7 @@ describe Project, models: true do
   end
 
   describe '#open_branches' do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
 
     before do
       project.protected_branches.create(name: 'master')
@@ -636,7 +636,7 @@ describe Project, models: true do
     it 'counts stars from multiple users' do
       user1 = create :user
       user2 = create :user
-      project = create :project, :public
+      project = create :empty_project, :public
 
       expect(project.star_count).to eq(0)
 
@@ -658,8 +658,8 @@ describe Project, models: true do
 
     it 'counts stars on the right project' do
       user = create :user
-      project1 = create :project, :public
-      project2 = create :project, :public
+      project1 = create :empty_project, :public
+      project2 = create :empty_project, :public
 
       expect(project1.star_count).to eq(0)
       expect(project2.star_count).to eq(0)
@@ -691,7 +691,7 @@ describe Project, models: true do
   end
 
   describe '#avatar_type' do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
 
     it 'is true if avatar is image' do
       project.update_attribute(:avatar, 'uploads/avatar.png')
@@ -707,7 +707,7 @@ describe Project, models: true do
   describe '#avatar_url' do
     subject { project.avatar_url }
 
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
 
     context 'When avatar file is uploaded' do
       before do
@@ -742,7 +742,7 @@ describe Project, models: true do
   end
 
   describe '#pipeline_for' do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
     let!(:pipeline) { create_pipeline }
 
     shared_examples 'giving the correct pipeline' do
@@ -776,7 +776,7 @@ describe Project, models: true do
   end
 
   describe '#builds_enabled' do
-    let(:project) { create :project }
+    let(:project) { create :empty_project }
 
     subject { project.builds_enabled }
 
@@ -828,7 +828,7 @@ describe Project, models: true do
   end
 
   describe '.visible_to_user' do
-    let!(:project) { create(:project, :private) }
+    let!(:project) { create(:empty_project, :private) }
     let!(:user)    { create(:user) }
 
     subject { described_class.visible_to_user(user) }
@@ -926,7 +926,7 @@ describe Project, models: true do
   end
 
   describe '#visibility_level_allowed?' do
-    let(:project) { create(:project, :internal) }
+    let(:project) { create(:empty_project, :internal) }
 
     context 'when checking on non-forked project' do
       it { expect(project.visibility_level_allowed?(Gitlab::VisibilityLevel::PRIVATE)).to be_truthy }
@@ -935,8 +935,8 @@ describe Project, models: true do
     end
 
     context 'when checking on forked project' do
-      let(:project)        { create(:project, :internal) }
-      let(:forked_project) { create(:project, forked_from_project: project) }
+      let(:project)        { create(:empty_project, :internal) }
+      let(:forked_project) { create(:empty_project, forked_from_project: project) }
 
       it { expect(forked_project.visibility_level_allowed?(Gitlab::VisibilityLevel::PRIVATE)).to be_truthy }
       it { expect(forked_project.visibility_level_allowed?(Gitlab::VisibilityLevel::INTERNAL)).to be_truthy }
@@ -945,7 +945,7 @@ describe Project, models: true do
   end
 
   describe '.search' do
-    let(:project) { create(:project, description: 'kitten mittens') }
+    let(:project) { create(:empty_project, description: 'kitten mittens') }
 
     it 'returns projects with a matching name' do
       expect(described_class.search(project.name)).to eq([project])
@@ -1003,7 +1003,7 @@ describe Project, models: true do
   end
 
   describe '#rename_repo' do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
     let(:gitlab_shell) { Gitlab::Shell.new }
 
     before do
@@ -1053,7 +1053,7 @@ describe Project, models: true do
   end
 
   describe '#expire_caches_before_rename' do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
     let(:repo)    { double(:repo, exists?: true) }
     let(:wiki)    { double(:wiki, exists?: true) }
 
@@ -1074,7 +1074,7 @@ describe Project, models: true do
   end
 
   describe '.search_by_title' do
-    let(:project) { create(:project, name: 'kittens') }
+    let(:project) { create(:empty_project, name: 'kittens') }
 
     it 'returns projects with a matching name' do
       expect(described_class.search_by_title(project.name)).to eq([project])
@@ -1093,8 +1093,8 @@ describe Project, models: true do
     let(:private_group)    { create(:group, visibility_level: 0)  }
     let(:internal_group)   { create(:group, visibility_level: 10) }
 
-    let(:private_project)  { create :project, :private, group: private_group }
-    let(:internal_project) { create :project, :internal, group: internal_group }
+    let(:private_project)  { create :empty_project, :private, group: private_group }
+    let(:internal_project) { create :empty_project, :internal, group: internal_group }
 
     context 'when group is private project can not be internal' do
       it { expect(private_project.visibility_level_allowed?(Gitlab::VisibilityLevel::INTERNAL)).to be_falsey }
@@ -1106,7 +1106,7 @@ describe Project, models: true do
   end
 
   describe '#create_repository' do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
     let(:shell) { Gitlab::Shell.new }
 
     before do
@@ -1148,7 +1148,7 @@ describe Project, models: true do
 
   describe '#protected_branch?' do
     context 'existing project' do
-      let(:project) { create(:project) }
+      let(:project) { create(:empty_project) }
 
       it 'returns true when the branch matches a protected branch via direct match' do
         create(:protected_branch, project: project, name: "foo")
@@ -1332,7 +1332,7 @@ describe Project, models: true do
              name: name)
     end
 
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
     let(:pipeline) { create_pipeline }
 
     context 'with many builds' do
@@ -1412,7 +1412,7 @@ describe Project, models: true do
     end
 
     context 'not forked' do
-      let(:project) { create(:project) }
+      let(:project) { create(:empty_project) }
 
       it 'schedules a RepositoryImportWorker job' do
         expect(RepositoryImportWorker).to receive(:perform_async).with(project.id)
@@ -1423,7 +1423,7 @@ describe Project, models: true do
   end
 
   describe '#lfs_enabled?' do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
 
     shared_examples 'project overrides group' do
       it 'returns true when enabled in project' do
@@ -1498,8 +1498,8 @@ describe Project, models: true do
     end
 
     context 'with valid paths' do
-      let!(:project1) { create(:project) }
-      let!(:project2) { create(:project) }
+      let!(:project1) { create(:empty_project) }
+      let!(:project2) { create(:empty_project) }
 
       it 'returns the projects matching the paths' do
         projects = Project.where_paths_in([project1.path_with_namespace,
@@ -1518,7 +1518,7 @@ describe Project, models: true do
   end
 
   describe 'change_head' do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
 
     it 'calls the before_change_head method' do
       expect(project.repository).to receive(:before_change_head)
@@ -1549,7 +1549,7 @@ describe Project, models: true do
   end
 
   describe '#pushes_since_gc' do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
 
     after do
       project.reset_pushes_since_gc
@@ -1571,7 +1571,7 @@ describe Project, models: true do
   end
 
   describe '#increment_pushes_since_gc' do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
 
     after do
       project.reset_pushes_since_gc
@@ -1585,7 +1585,7 @@ describe Project, models: true do
   end
 
   describe '#reset_pushes_since_gc' do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
 
     after do
       project.reset_pushes_since_gc
@@ -1601,7 +1601,7 @@ describe Project, models: true do
   end
 
   describe '#environments_for' do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
     let(:environment) { create(:environment, project: project) }
 
     context 'tagged deployment' do
@@ -1653,7 +1653,7 @@ describe Project, models: true do
   end
 
   describe '#environments_recently_updated_on_branch' do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
     let(:environment) { create(:environment, project: project) }
 
     context 'when last deployment to environment is the most recent one' do

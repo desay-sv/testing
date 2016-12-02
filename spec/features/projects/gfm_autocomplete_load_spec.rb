@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'GFM autocomplete loading', feature: true, js: true do
-  let(:project)   { create(:project) }
+  let(:project)   { create(:empty_project) }
 
   before do
     login_as :admin

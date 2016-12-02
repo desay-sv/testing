@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Gitlab::ProjectSearchResults, lib: true do
   let(:user) { create(:user) }
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:query) { 'hello world' }
 
   describe 'initialize with empty ref' do

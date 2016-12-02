@@ -5,7 +5,7 @@ describe DestroyGroupService, services: true do
 
   let!(:user) { create(:user) }
   let!(:group) { create(:group) }
-  let!(:project) { create(:project, namespace: group) }
+  let!(:project) { create(:empty_project, namespace: group) }
   let!(:gitlab_shell) { Gitlab::Shell.new }
   let!(:remove_path) { group.path + "+#{group.id}+deleted" }
 

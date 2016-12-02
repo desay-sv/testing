@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Projects::NotesController do
   let(:user)    { create(:user) }
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:issue)   { create(:issue, project: project) }
   let(:note)    { create(:note, noteable: issue, project: project) }
 

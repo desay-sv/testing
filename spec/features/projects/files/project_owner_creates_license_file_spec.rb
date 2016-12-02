@@ -4,7 +4,7 @@ feature 'project owner creates a license file', feature: true, js: true do
   include WaitForAjax
 
   let(:project_master) { create(:user) }
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   background do
     project.repository.remove_file(project_master, 'LICENSE', 'Remove LICENSE', 'master')
     project.team << [project_master, :master]

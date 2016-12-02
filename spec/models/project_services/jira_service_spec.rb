@@ -71,7 +71,7 @@ describe JiraService, models: true do
   describe "Execute" do
     let(:custom_base_url) { 'http://custom_url' }
     let(:user)    { create(:user) }
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
     let(:merge_request) { create(:merge_request) }
 
     before do
@@ -195,12 +195,12 @@ describe JiraService, models: true do
   end
 
   describe "Stored password invalidation" do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
 
     context "when a password was previously set" do
       before do
         @jira_service = JiraService.create!(
-          project: create(:project),
+          project: create(:empty_project),
           properties: {
             url: 'http://jira.example.com/rest/api/2',
             username: 'mic',
@@ -240,7 +240,7 @@ describe JiraService, models: true do
     context "when no password was previously set" do
       before do
         @jira_service = JiraService.create(
-          project: create(:project),
+          project: create(:empty_project),
           properties: {
             url: 'http://jira.example.com/rest/api/2',
             username: 'mic'
@@ -269,7 +269,7 @@ describe JiraService, models: true do
   end
 
   describe 'description and title' do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
 
     context 'when it is not set' do
       before do
@@ -304,7 +304,7 @@ describe JiraService, models: true do
   end
 
   describe 'project and issue urls' do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
 
     context 'when gitlab.yml was initialized' do
       before do

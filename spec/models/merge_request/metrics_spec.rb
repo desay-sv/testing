@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe MergeRequest::Metrics, models: true do
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
 
   subject { create(:merge_request, source_project: project) }
 

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'projects/pipelines/show' do
   include Devise::Test::ControllerHelpers
 
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:pipeline) { create(:ci_empty_pipeline, project: project, sha: project.commit.id) }
 
   before do

@@ -268,7 +268,7 @@ describe NotificationService, services: true do
     end
 
     context 'commit note' do
-      let(:project) { create(:project, :public) }
+      let(:project) { create(:empty_project, :public) }
       let(:note) { create(:note_on_commit, project: project) }
 
       before do
@@ -317,7 +317,7 @@ describe NotificationService, services: true do
     end
 
     context "merge request diff note" do
-      let(:project) { create(:project) }
+      let(:project) { create(:empty_project) }
       let(:user) { create(:user) }
       let(:merge_request) { create(:merge_request, source_project: project, assignee: user) }
       let(:note) { create(:diff_note_on_merge_request, project: project, noteable: merge_request) }
@@ -753,7 +753,7 @@ describe NotificationService, services: true do
 
   describe 'Merge Requests' do
     let(:group) { create(:group) }
-    let(:project) { create(:project, :public, namespace: group) }
+    let(:project) { create(:empty_project, :public, namespace: group) }
     let(:another_project) { create(:empty_project, :public, namespace: group) }
     let(:merge_request) { create :merge_request, source_project: project, assignee: create(:user), description: 'cc @participant' }
 
@@ -1161,7 +1161,7 @@ describe NotificationService, services: true do
   end
 
   describe 'Projects' do
-    let(:project) { create :project }
+    let(:project) { create :empty_project }
 
     before do
       build_team(project)
@@ -1206,7 +1206,7 @@ describe NotificationService, services: true do
 
   describe 'ProjectMember' do
     describe '#decline_group_invite' do
-      let(:project) { create(:project) }
+      let(:project) { create(:empty_project) }
       let(:member) { create(:user) }
 
       before(:each) do

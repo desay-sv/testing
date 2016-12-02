@@ -2,7 +2,7 @@ require 'spec_helper'
 
 feature 'Merge When Build Succeeds', feature: true, js: true do
   let(:user) { create(:user) }
-  let(:project) { create(:project, :public) }
+  let(:project) { create(:empty_project, :public) }
 
   let(:merge_request) do
     create(:merge_request_with_diffs, source_project: project,

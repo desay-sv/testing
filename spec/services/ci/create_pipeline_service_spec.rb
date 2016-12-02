@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Ci::CreatePipelineService, services: true do
-  let(:project) { FactoryGirl.create(:project) }
+  let(:project) { FactoryGirl.create(:empty_project) }
   let(:user) { create(:admin) }
 
   before do

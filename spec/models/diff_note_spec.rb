@@ -3,7 +3,7 @@ require 'spec_helper'
 describe DiffNote, models: true do
   include RepoHelpers
 
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:merge_request) { create(:merge_request, source_project: project) }
   let(:commit) { project.commit(sample_commit.id) }
 

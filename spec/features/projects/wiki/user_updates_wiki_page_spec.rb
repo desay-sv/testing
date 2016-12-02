@@ -13,7 +13,7 @@ feature 'Projects > Wiki > User updates wiki page', feature: true do
   end
 
   context 'in the user namespace' do
-    let(:project) { create(:project, namespace: user.namespace) }
+    let(:project) { create(:empty_project, namespace: user.namespace) }
 
     scenario 'the home page' do
       click_link 'Edit'
@@ -28,7 +28,7 @@ feature 'Projects > Wiki > User updates wiki page', feature: true do
   end
 
   context 'in a group namespace' do
-    let(:project) { create(:project, namespace: create(:group, :public)) }
+    let(:project) { create(:empty_project, namespace: create(:group, :public)) }
 
     scenario 'the home page' do
       click_link 'Edit'

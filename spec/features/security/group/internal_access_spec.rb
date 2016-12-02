@@ -4,7 +4,7 @@ describe 'Internal Group access', feature: true do
   include AccessMatchers
 
   let(:group)   { create(:group, :internal) }
-  let(:project) { create(:project, :internal, group: group) }
+  let(:project) { create(:empty_project, :internal, group: group) }
   let(:project_guest) do
     create(:user) do |user|
       project.add_guest(user)

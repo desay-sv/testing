@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'projects/builds/show', :view do
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:build) { create(:ci_build, pipeline: pipeline) }
 
   let(:pipeline) do

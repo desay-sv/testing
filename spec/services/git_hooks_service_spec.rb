@@ -4,7 +4,7 @@ describe GitHooksService, services: true do
   include RepoHelpers
 
   let(:user)    { create :user }
-  let(:project) { create :project }
+  let(:project) { create :empty_project }
   let(:service) { GitHooksService.new }
 
   before do

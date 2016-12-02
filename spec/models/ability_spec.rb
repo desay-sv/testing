@@ -60,7 +60,7 @@ describe Ability, lib: true do
   describe '.users_that_can_read_project' do
     context 'using a public project' do
       it 'returns all the users' do
-        project = create(:project, :public)
+        project = create(:empty_project, :public)
         user = build(:user)
 
         expect(described_class.users_that_can_read_project([user], project)).
@@ -69,7 +69,7 @@ describe Ability, lib: true do
     end
 
     context 'using an internal project' do
-      let(:project) { create(:project, :internal) }
+      let(:project) { create(:empty_project, :internal) }
 
       it 'returns users that are administrators' do
         user = build(:user, admin: true)
@@ -120,7 +120,7 @@ describe Ability, lib: true do
     end
 
     context 'using a private project' do
-      let(:project) { create(:project, :private) }
+      let(:project) { create(:empty_project, :private) }
 
       it 'returns users that are administrators' do
         user = build(:user, admin: true)
@@ -220,7 +220,7 @@ describe Ability, lib: true do
   end
 
   describe '.project_disabled_features_rules' do
-    let(:project) { create(:project,  wiki_access_level: ProjectFeature::DISABLED) }
+    let(:project) { create(:empty_project,  wiki_access_level: ProjectFeature::DISABLED) }
 
     subject { described_class.allowed(project.owner, project) }
 

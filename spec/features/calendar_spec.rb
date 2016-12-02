@@ -3,7 +3,7 @@ require 'spec_helper'
 feature 'Contributions Calendar', js: true, feature: true do
   include WaitForAjax
 
-  let(:contributed_project) { create(:project, :public) }
+  let(:contributed_project) { create(:empty_project, :public) }
 
   # Ex/ Sunday Jan 1, 2016
   date_format = '%A %b %-d, %Y'

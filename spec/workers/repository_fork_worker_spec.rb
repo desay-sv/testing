@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe RepositoryForkWorker do
-  let(:project) { create(:project) }
-  let(:fork_project) { create(:project, forked_from_project: project) }
+  let(:project) { create(:empty_project) }
+  let(:fork_project) { create(:empty_project, forked_from_project: project) }
   let(:shell) { Gitlab::Shell.new }
 
   subject { RepositoryForkWorker.new }

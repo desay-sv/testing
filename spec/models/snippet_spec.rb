@@ -138,7 +138,7 @@ describe Snippet, models: true do
   end
 
   describe '#participants' do
-    let(:project) { create(:project, :public) }
+    let(:project) { create(:empty_project, :public) }
     let(:snippet) { create(:snippet, content: 'foo', project: project) }
 
     let!(:note1) do

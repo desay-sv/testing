@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Tree, models: true do
-  let(:repository) { create(:project).repository }
+  let(:repository) { create(:empty_project).repository }
   let(:sha) { repository.root_ref }
 
   subject { described_class.new(repository, '54fcc214') }

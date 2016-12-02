@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe SystemHooksService, services: true do
   let(:user)          { create :user }
-  let(:project)       { create :project }
+  let(:project)       { create :empty_project }
   let(:project_member) { create :project_member }
   let(:key)           { create(:key, user: user) }
   let(:group)         { create(:group) }

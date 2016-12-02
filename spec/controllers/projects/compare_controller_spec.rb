@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Projects::CompareController do
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:user) { create(:user) }
   let(:ref_from) { "improve%2Fawesome" }
   let(:ref_to) { "feature" }

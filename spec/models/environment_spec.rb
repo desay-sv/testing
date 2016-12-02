@@ -42,7 +42,7 @@ describe Environment, models: true do
     end
 
     context 'with a last deployment' do
-      let(:project)     { create(:project) }
+      let(:project)     { create(:empty_project) }
       let(:environment) { create(:environment, project: project) }
 
       let!(:deployment) do
@@ -68,7 +68,7 @@ describe Environment, models: true do
   end
 
   describe '#first_deployment_for' do
-    let(:project)       { create(:project) }
+    let(:project)       { create(:empty_project) }
     let!(:environment)  { create(:environment, project: project) }
     let!(:deployment)   { create(:deployment, environment: environment, ref: commit.parent.id) }
     let!(:deployment1)  { create(:deployment, environment: environment, ref: commit.id) }

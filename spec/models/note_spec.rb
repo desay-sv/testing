@@ -80,8 +80,8 @@ describe Note, models: true do
 
   describe 'authorization' do
     before do
-      @p1 = create(:project)
-      @p2 = create(:project)
+      @p1 = create(:empty_project)
+      @p2 = create(:empty_project)
       @u1 = create(:user)
       @u2 = create(:user)
       @u3 = create(:user)
@@ -175,7 +175,7 @@ describe Note, models: true do
 
     context "confidential issues" do
       let(:user) { create(:user) }
-      let(:project) { create(:project) }
+      let(:project) { create(:empty_project) }
       let(:confidential_issue) { create(:issue, :confidential, project: project, author: user) }
       let(:confidential_note) { create(:note, note: "Random", noteable: confidential_issue, project: confidential_issue.project) }
 
@@ -214,10 +214,10 @@ describe Note, models: true do
 
   describe "cross_reference_not_visible_for?" do
     let(:private_user)    { create(:user) }
-    let(:private_project) { create(:project, namespace: private_user.namespace).tap { |p| p.team << [private_user, :master] } }
+    let(:private_project) { create(:empty_project, namespace: private_user.namespace).tap { |p| p.team << [private_user, :master] } }
     let(:private_issue)   { create(:issue, project: private_project) }
 
-    let(:ext_proj)  { create(:project, :public) }
+    let(:ext_proj)  { create(:empty_project, :public) }
     let(:ext_issue) { create(:issue, project: ext_proj) }
 
     let(:note) do
@@ -260,7 +260,7 @@ describe Note, models: true do
 
   describe '#participants' do
     it 'includes the note author' do
-      project = create(:project, :public)
+      project = create(:empty_project, :public)
       issue = create(:issue, project: project)
       note = create(:note_on_issue, noteable: issue, project: project)
 

@@ -4,11 +4,11 @@ describe "Dashboard > User filters projects", feature: true do
   describe 'filtering personal projects' do
     before do
       user = create(:user)
-      project = create(:project, name: "Victorialand", namespace: user.namespace)
+      project = create(:empty_project, name: "Victorialand", namespace: user.namespace)
       project.team << [user, :master]
 
       user2 = create(:user)
-      project2 = create(:project, name: "Treasure", namespace: user2.namespace)
+      project2 = create(:empty_project, name: "Treasure", namespace: user2.namespace)
       project2.team << [user, :developer]
 
       login_as(user)

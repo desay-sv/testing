@@ -4,7 +4,7 @@ feature 'Download buttons in project main page', feature: true do
   given(:user) { create(:user) }
   given(:role) { :developer }
   given(:status) { 'success' }
-  given(:project) { create(:project) }
+  given(:project) { create(:empty_project) }
 
   given(:pipeline) do
     create(:ci_pipeline,

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Banzai::Filter::CommitReferenceFilter, lib: true do
   include FilterSpecHelper
 
-  let(:project) { create(:project, :public) }
+  let(:project) { create(:empty_project, :public) }
   let(:commit)  { project.commit }
 
   it 'requires project context' do
@@ -97,7 +97,7 @@ describe Banzai::Filter::CommitReferenceFilter, lib: true do
 
   context 'cross-project reference' do
     let(:namespace) { create(:namespace, name: 'cross-reference') }
-    let(:project2)  { create(:project, :public, namespace: namespace) }
+    let(:project2)  { create(:empty_project, :public, namespace: namespace) }
     let(:commit)    { project2.commit }
     let(:reference) { commit.to_reference(project) }
 
@@ -123,7 +123,7 @@ describe Banzai::Filter::CommitReferenceFilter, lib: true do
 
   context 'cross-project URL reference' do
     let(:namespace) { create(:namespace, name: 'cross-reference') }
-    let(:project2)  { create(:project, :public, namespace: namespace) }
+    let(:project2)  { create(:empty_project, :public, namespace: namespace) }
     let(:commit)    { project2.commit }
     let(:reference) { urls.namespace_project_commit_url(project2.namespace, project2, commit.id) }
 

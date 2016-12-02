@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature 'Projects > Members > Owner cannot request access to his project', feature: true do
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
 
   background do
     login_as(project.owner)

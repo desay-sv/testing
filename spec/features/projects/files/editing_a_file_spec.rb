@@ -3,7 +3,7 @@ require 'spec_helper'
 feature 'User wants to edit a file', feature: true do
   include WaitForAjax
 
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:user) { create(:user) }
   let(:commit_params) do
     {

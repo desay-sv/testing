@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe ProjectCacheWorker do
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:worker) { described_class.new }
 
   describe '#perform' do

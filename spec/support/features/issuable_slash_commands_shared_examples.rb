@@ -8,7 +8,7 @@ shared_examples 'issuable record that supports slash commands in its description
   let(:master) { create(:user) }
   let(:assignee) { create(:user, username: 'bob') }
   let(:guest) { create(:user) }
-  let(:project) { create(:project, :public) }
+  let(:project) { create(:empty_project, :public) }
   let!(:milestone) { create(:milestone, project: project, title: 'ASAP') }
   let!(:label_bug) { create(:label, project: project, title: 'bug') }
   let!(:label_feature) { create(:label, project: project, title: 'feature') }

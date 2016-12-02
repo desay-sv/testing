@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Gitlab::CycleAnalytics::Events do
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:from_date) { 10.days.ago }
   let(:user) { create(:user, :admin) }
   let!(:context) { create(:issue, project: project, created_at: 2.days.ago) }

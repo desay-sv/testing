@@ -10,7 +10,7 @@ feature 'Issues > User uses slash commands', feature: true, js: true do
 
   describe 'issue-only commands' do
     let(:user) { create(:user) }
-    let(:project) { create(:project, :public) }
+    let(:project) { create(:empty_project, :public) }
 
     before do
       project.team << [user, :master]

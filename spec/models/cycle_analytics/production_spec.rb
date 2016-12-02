@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'CycleAnalytics#production', feature: true do
   extend CycleAnalyticsHelpers::TestGeneration
 
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:from_date) { 10.days.ago }
   let(:user) { create(:user, :admin) }
   subject { CycleAnalytics.new(project, user, from: from_date) }

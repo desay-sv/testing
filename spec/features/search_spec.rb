@@ -4,7 +4,7 @@ describe "Search", feature: true  do
   include WaitForAjax
 
   let(:user) { create(:user) }
-  let(:project) { create(:project, namespace: user.namespace) }
+  let(:project) { create(:empty_project, namespace: user.namespace) }
   let!(:issue) { create(:issue, project: project, assignee: user) }
   let!(:issue2) { create(:issue, project: project, author: user) }
 

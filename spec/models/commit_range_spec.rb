@@ -7,7 +7,7 @@ describe CommitRange, models: true do
     it { is_expected.to include_module(Referable) }
   end
 
-  let!(:project) { create(:project, :public) }
+  let!(:project) { create(:empty_project, :public) }
   let!(:commit1) { project.commit("HEAD~2") }
   let!(:commit2) { project.commit }
 
@@ -45,7 +45,7 @@ describe CommitRange, models: true do
   end
 
   describe '#to_reference' do
-    let(:cross) { create(:project) }
+    let(:cross) { create(:empty_project) }
 
     it 'returns a String reference to the object' do
       expect(range.to_reference).to eq "#{full_sha_from}...#{full_sha_to}"
@@ -61,7 +61,7 @@ describe CommitRange, models: true do
   end
 
   describe '#reference_link_text' do
-    let(:cross) { create(:project) }
+    let(:cross) { create(:empty_project) }
 
     it 'returns a String reference to the object' do
       expect(range.reference_link_text).to eq "#{sha_from}...#{sha_to}"

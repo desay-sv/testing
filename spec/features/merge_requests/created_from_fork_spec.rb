@@ -2,8 +2,8 @@ require 'spec_helper'
 
 feature 'Merge request created from fork' do
   given(:user) { create(:user) }
-  given(:project) { create(:project, :public) }
-  given(:fork_project) { create(:project, :public) }
+  given(:project) { create(:empty_project, :public) }
+  given(:fork_project) { create(:empty_project, :public) }
 
   given!(:merge_request) do
     create(:forked_project_link, forked_to_project: fork_project,

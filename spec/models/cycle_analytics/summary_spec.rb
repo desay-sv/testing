@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe CycleAnalytics::Summary, models: true do
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:from) { Time.now }
   let(:user) { create(:user, :admin) }
   subject { described_class.new(project, user, from: from) }
@@ -15,7 +15,7 @@ describe CycleAnalytics::Summary, models: true do
     end
 
     it "doesn't find issues from other projects" do
-      Timecop.freeze(5.days.from_now) { create(:issue, project: create(:project)) }
+      Timecop.freeze(5.days.from_now) { create(:issue, project: create(:empty_project)) }
 
       expect(subject.new_issues).to eq(0)
     end
@@ -30,7 +30,7 @@ describe CycleAnalytics::Summary, models: true do
     end
 
     it "doesn't find commits from other projects" do
-      Timecop.freeze(5.days.from_now) { create_commit("Test message", create(:project), user, 'master') }
+      Timecop.freeze(5.days.from_now) { create_commit("Test message", create(:empty_project), user, 'master') }
 
       expect(subject.commits).to eq(0)
     end
@@ -51,7 +51,7 @@ describe CycleAnalytics::Summary, models: true do
     end
 
     it "doesn't find commits from other projects" do
-      Timecop.freeze(5.days.from_now) { create(:deployment, project: create(:project)) }
+      Timecop.freeze(5.days.from_now) { create(:deployment, project: create(:empty_project)) }
 
       expect(subject.deploys).to eq(0)
     end

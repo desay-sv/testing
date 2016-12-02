@@ -4,7 +4,7 @@ describe 'Projects > Merge requests > User lists merge requests', feature: true 
   include MergeRequestHelpers
   include SortingHelper
 
-  let(:project) { create(:project, :public) }
+  let(:project) { create(:empty_project, :public) }
   let(:user) { create(:user) }
 
   before do

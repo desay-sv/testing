@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature 'Projects > Members > Owner cannot leave project', feature: true do
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
 
   background do
     login_as(project.owner)

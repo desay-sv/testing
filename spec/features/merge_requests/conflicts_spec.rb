@@ -4,7 +4,7 @@ feature 'Merge request conflict resolution', js: true, feature: true do
   include WaitForAjax
 
   let(:user) { create(:user) }
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
 
   def create_merge_request(source_branch)
     create(:merge_request, source_branch: source_branch, target_branch: 'conflict-start', source_project: project) do |mr|

@@ -57,7 +57,7 @@ describe Namespace, models: true do
   describe '#move_dir' do
     before do
       @namespace = create :namespace
-      @project = create :project, namespace: @namespace
+      @project = create :empty_project, namespace: @namespace
       allow(@namespace).to receive(:path_changed?).and_return(true)
     end
 
@@ -88,7 +88,7 @@ describe Namespace, models: true do
   end
 
   describe :rm_dir do
-    let!(:project) { create(:project, namespace: namespace) }
+    let!(:project) { create(:empty_project, namespace: namespace) }
     let!(:path) { File.join(Gitlab.config.repositories.storages.default, namespace.path) }
 
     before { namespace.destroy }

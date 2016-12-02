@@ -64,7 +64,7 @@ module TestEnv
     # Setup GitLab shell for test instance
     setup_gitlab_shell
 
-    # Create repository for FactoryGirl.create(:project)
+    # Create repository for FactoryGirl.create(:empty_project)
     setup_factory_repo
 
     # Create repository for FactoryGirl.create(:forked_project_with_submodules)

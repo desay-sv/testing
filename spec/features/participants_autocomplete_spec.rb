@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 feature 'Member autocomplete', feature: true do
-  let(:project) { create(:project, :public) }
+  let(:project) { create(:empty_project, :public) }
   let(:user) { create(:user) }
   let(:participant) { create(:user) }
   let(:author) { create(:user) }

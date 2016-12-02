@@ -4,7 +4,7 @@ feature 'Issues > Labels bulk assignment', feature: true do
   include WaitForAjax
 
   let(:user)      { create(:user) }
-  let!(:project)  { create(:project) }
+  let!(:project)  { create(:empty_project) }
   let!(:issue1)   { create(:issue, project: project, title: "Issue 1") }
   let!(:issue2)   { create(:issue, project: project, title: "Issue 2") }
   let!(:bug)      { create(:label, project: project, title: 'bug') }

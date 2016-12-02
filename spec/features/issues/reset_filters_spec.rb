@@ -4,7 +4,7 @@ feature 'Issues filter reset button', feature: true, js: true do
   include WaitForAjax
   include IssueHelpers
 
-  let!(:project)    { create(:project, :public) }
+  let!(:project)    { create(:empty_project, :public) }
   let!(:user)        { create(:user)}
   let!(:milestone)  { create(:milestone, project: project) }
   let!(:bug)        { create(:label, project: project, name: 'bug')}

@@ -4,7 +4,7 @@ describe Repository, models: true do
   include RepoHelpers
   TestBlob = Struct.new(:name)
 
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:repository) { project.repository }
   let(:user) { create(:user) }
 

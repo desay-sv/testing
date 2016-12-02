@@ -4,7 +4,7 @@ describe EmailsOnPushWorker do
   include RepoHelpers
   include EmailSpec::Matchers
 
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:user) { create(:user) }
   let(:data) { Gitlab::DataBuilder::Push.build_sample(project, user) }
   let(:recipients) { user.email }

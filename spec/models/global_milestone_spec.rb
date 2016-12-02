@@ -4,9 +4,9 @@ describe GlobalMilestone, models: true do
   let(:user) { create(:user) }
   let(:user2) { create(:user) }
   let(:group) { create(:group) }
-  let(:project1) { create(:project, group: group) }
-  let(:project2) { create(:project, path: 'gitlab-ci', group: group) }
-  let(:project3) { create(:project, path: 'cookbook-gitlab', group: group) }
+  let(:project1) { create(:empty_project, group: group) }
+  let(:project2) { create(:empty_project, path: 'gitlab-ci', group: group) }
+  let(:project3) { create(:empty_project, path: 'cookbook-gitlab', group: group) }
   let(:milestone1_project1) { create(:milestone, title: "Milestone v1.2", project: project1) }
   let(:milestone1_project2) { create(:milestone, title: "Milestone v1.2", project: project2) }
   let(:milestone1_project3) { create(:milestone, title: "Milestone v1.2", project: project3) }

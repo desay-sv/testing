@@ -3,7 +3,7 @@ require 'spec_helper'
 feature 'list of badges' do
   background do
     user = create(:user)
-    project = create(:project)
+    project = create(:empty_project)
     project.team << [user, :master]
     login_as(user)
     visit namespace_project_pipelines_settings_path(project.namespace, project)

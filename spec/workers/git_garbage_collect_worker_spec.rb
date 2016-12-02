@@ -3,7 +3,7 @@ require 'fileutils'
 require 'spec_helper'
 
 describe GitGarbageCollectWorker do
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:shell) { Gitlab::Shell.new }
 
   subject { GitGarbageCollectWorker.new }

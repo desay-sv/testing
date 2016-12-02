@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe MergeRequests::MergeWhenBuildSucceedsService do
   let(:user) { create(:user) }
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
 
   let(:mr_merge_if_green_enabled) do
     create(:merge_request, merge_when_build_succeeds: true, merge_user: user,

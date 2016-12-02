@@ -46,7 +46,7 @@ feature 'Import/Export - project import integration test', feature: true, js: tr
     end
 
     scenario 'invalid project' do
-      project = create(:project, namespace: namespace)
+      project = create(:empty_project, namespace: namespace)
 
       visit new_project_path
 
@@ -63,7 +63,7 @@ feature 'Import/Export - project import integration test', feature: true, js: tr
     end
 
     scenario 'project with no name' do
-      create(:project, namespace: namespace)
+      create(:empty_project, namespace: namespace)
 
       visit new_project_path
 

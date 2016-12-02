@@ -1,8 +1,8 @@
 require('spec_helper')
 
 describe ProjectsController do
-  let(:project) { create(:project) }
-  let(:public_project) { create(:project, :public) }
+  let(:project) { create(:empty_project) }
+  let(:public_project) { create(:empty_project, :public) }
   let(:user)    { create(:user) }
   let(:jpg)     { fixture_file_upload(Rails.root + 'spec/fixtures/rails_sample.jpg', 'image/jpg') }
   let(:txt)     { fixture_file_upload(Rails.root + 'spec/fixtures/doc_sample.txt', 'text/plain') }
@@ -32,7 +32,7 @@ describe ProjectsController do
       before { sign_in(user) }
 
       context "user does not have access to project" do
-        let(:private_project) { create(:project, :private) }
+        let(:private_project) { create(:empty_project, :private) }
 
         it "does not initialize notification setting" do
           get :show, namespace_id: private_project.namespace.path, id: private_project.path
@@ -194,7 +194,7 @@ describe ProjectsController do
         # MySQL queries are case insensitive by default, so this spec would fail.
         if Gitlab::Database.postgresql?
           context "when there is also a match with the same casing" do
-            let!(:other_project) { create(:project, :public, namespace: public_project.namespace, path: public_project.path.upcase) }
+            let!(:other_project) { create(:empty_project, :public, namespace: public_project.namespace, path: public_project.path.upcase) }
 
             it "loads the exactly matched project" do
               get :show, namespace_id: public_project.namespace.path, id: public_project.path.upcase
@@ -217,7 +217,7 @@ describe ProjectsController do
 
     context 'when the project is pending deletions' do
       it 'renders a 404 error' do
-        project = create(:project, pending_delete: true)
+        project = create(:empty_project, pending_delete: true)
         sign_in(user)
 
         get :show, namespace_id: project.namespace.path, id: project.path
@@ -265,8 +265,8 @@ describe ProjectsController do
     end
 
     context "when the project is forked" do
-      let(:project)      { create(:project) }
-      let(:fork_project) { create(:project, forked_from_project: project) }
+      let(:project)      { create(:empty_project) }
+      let(:fork_project) { create(:empty_project, forked_from_project: project) }
       let(:merge_request) do
         create(:merge_request,
           source_project: fork_project,
@@ -344,7 +344,7 @@ describe ProjectsController do
       end
 
       context 'with forked project' do
-        let(:project_fork) { create(:project, namespace: user.namespace) }
+        let(:project_fork) { create(:empty_project, namespace: user.namespace) }
 
         before do
           create(:forked_project_link, forked_to_project: project_fork)
@@ -362,7 +362,7 @@ describe ProjectsController do
       end
 
       context 'when project not forked' do
-        let(:unforked_project) { create(:project, namespace: user.namespace) }
+        let(:unforked_project) { create(:empty_project, namespace: user.namespace) }
 
         it 'does nothing if project was not forked' do
           delete(:remove_fork,

@@ -25,7 +25,7 @@ describe Issue, models: true do
   describe '.visible_to_user' do
     let(:user) { create(:user) }
     let(:authorized_user) { create(:user) }
-    let(:project) { create(:project, namespace: authorized_user.namespace) }
+    let(:project) { create(:empty_project, namespace: authorized_user.namespace) }
     let!(:public_issue) { create(:issue, project: project) }
     let!(:confidential_issue) { create(:issue, project: project, confidential: true) }
 
@@ -74,7 +74,7 @@ describe Issue, models: true do
   end
 
   describe '#closed_by_merge_requests' do
-    let(:project) { create(:project) }
+    let(:project) { create(:empty_project) }
     let(:issue)   { create(:issue, project: project, state: "opened")}
     let(:closed_issue) { build(:issue, project: project, state: "closed")}
 
@@ -118,7 +118,7 @@ describe Issue, models: true do
 
   describe '#referenced_merge_requests' do
     it 'returns the referenced merge requests' do
-      project = create(:project, :public)
+      project = create(:empty_project, :public)
 
       mr1 = create(:merge_request,
                    source_project: project,
@@ -151,7 +151,7 @@ describe Issue, models: true do
     end
 
     context 'user is reporter in project issue belongs to' do
-      let(:project) { create(:project) }
+      let(:project) { create(:empty_project) }
       let(:issue) { create(:issue, project: project) }
 
       before { project.team << [user, :reporter] }
@@ -165,7 +165,7 @@ describe Issue, models: true do
 
       context 'checking destination project also' do
         subject { issue.can_move?(user, to_project) }
-        let(:to_project) { create(:project) }
+        let(:to_project) { create(:empty_project) }
 
         context 'destination project allowed' do
           before { to_project.team << [user, :reporter] }
@@ -260,7 +260,7 @@ describe Issue, models: true do
 
   describe '#participants' do
     context 'using a public project' do
-      let(:project) { create(:project, :public) }
+      let(:project) { create(:empty_project, :public) }
       let(:issue) { create(:issue, project: project) }
 
       let!(:note1) do
@@ -282,7 +282,7 @@ describe Issue, models: true do
 
     context 'using a private project' do
       it 'does not include mentioned users that do not have access to the project' do
-        project = create(:project)
+        project = create(:empty_project)
         user = create(:user)
         issue = create(:issue, project: project)
 

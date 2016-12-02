@@ -70,7 +70,7 @@ describe Projects::IssuesController do
 
   describe 'PUT #update' do
     context 'when moving issue to another private project' do
-      let(:another_project) { create(:project, :private) }
+      let(:another_project) { create(:empty_project, :private) }
 
       before do
         sign_in(user)
@@ -360,7 +360,7 @@ describe Projects::IssuesController do
     context "when the user is owner" do
       let(:owner)     { create(:user) }
       let(:namespace) { create(:namespace, owner: owner) }
-      let(:project)   { create(:project, namespace: namespace) }
+      let(:project)   { create(:empty_project, namespace: namespace) }
 
       before { sign_in(owner) }
 

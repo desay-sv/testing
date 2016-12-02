@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Projects::CommitController do
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:user)    { create(:user) }
   let(:commit)  { project.commit("master") }
   let(:master_pickable_sha) { '7d3b0f7cff5f37573aea97cebfd5692ea1689924' }

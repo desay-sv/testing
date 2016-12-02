@@ -4,7 +4,7 @@ describe 'Filter issues', feature: true do
   include WaitForAjax
 
   let!(:group)     { create(:group) }
-  let!(:project)   { create(:project, group: group) }
+  let!(:project)   { create(:empty_project, group: group) }
   let!(:user)      { create(:user)}
   let!(:milestone) { create(:milestone, project: project) }
   let!(:label)     { create(:label, project: project) }

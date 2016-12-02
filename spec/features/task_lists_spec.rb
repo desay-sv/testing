@@ -3,7 +3,7 @@ require 'spec_helper'
 feature 'Task Lists', feature: true do
   include Warden::Test::Helpers
 
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:user)    { create(:user) }
   let(:user2)   { create(:user) }
 

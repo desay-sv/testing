@@ -14,7 +14,7 @@ describe API::API, api: true  do
   end
 
   let(:project) do
-    create(:project, creator_id: user.id, namespace: user.namespace)
+    create(:empty_project, creator_id: user.id, namespace: user.namespace)
   end
 
   let(:project_user2) do

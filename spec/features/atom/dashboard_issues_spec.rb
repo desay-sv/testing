@@ -3,8 +3,8 @@ require 'spec_helper'
 describe "Dashboard Issues Feed", feature: true  do
   describe "GET /issues" do
     let!(:user)     { create(:user) }
-    let!(:project1) { create(:project) }
-    let!(:project2) { create(:project) }
+    let!(:project1) { create(:empty_project) }
+    let!(:project2) { create(:empty_project) }
 
     before do
       project1.team << [user, :master]

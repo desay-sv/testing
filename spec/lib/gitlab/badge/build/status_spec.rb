@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Gitlab::Badge::Build::Status do
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
   let(:sha) { project.commit.sha }
   let(:branch) { 'master' }
   let(:badge) { described_class.new(project, branch) }

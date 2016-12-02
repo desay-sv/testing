@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe Guest, lib: true do
-  let(:public_project) { create(:project, :public) }
-  let(:private_project) { create(:project, :private) }
-  let(:internal_project) { create(:project, :internal) }
+  let(:public_project) { create(:empty_project, :public) }
+  let(:private_project) { create(:empty_project, :private) }
+  let(:internal_project) { create(:empty_project, :internal) }
 
   describe '.can_pull?' do
     context 'when project is private' do

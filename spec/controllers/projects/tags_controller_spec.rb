@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Projects::TagsController do
-  let(:project) { create(:project, :public) }
+  let(:project) { create(:empty_project, :public) }
   let!(:release) { create(:release, project: project) }
   let!(:invalid_release) { create(:release, project: project, tag: 'does-not-exist') }
 

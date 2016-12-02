@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "Admin::Hooks", feature: true do
   before do
-    @project = create(:project)
+    @project = create(:empty_project)
     login_as :admin
 
     @system_hook = create(:system_hook)

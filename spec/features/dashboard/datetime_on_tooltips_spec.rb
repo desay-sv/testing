@@ -4,7 +4,7 @@ feature 'Tooltips on .timeago dates', feature: true, js: true do
   include WaitForAjax
 
   let(:user)            { create(:user) }
-  let(:project)         { create(:project, name: 'test', namespace: user.namespace) }
+  let(:project)         { create(:empty_project, name: 'test', namespace: user.namespace) }
   let(:created_date)    { Date.yesterday.to_time }
   let(:expected_format) { created_date.strftime('%b %-d, %Y %l:%M%P UTC') }
 

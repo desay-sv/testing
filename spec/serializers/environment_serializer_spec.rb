@@ -9,7 +9,7 @@ describe EnvironmentSerializer do
 
   let(:json) { serializer.as_json }
   let(:user) { create(:user) }
-  let(:project) { create(:project) }
+  let(:project) { create(:empty_project) }
 
   context 'when there is a single object provided' do
     before do
