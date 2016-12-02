@@ -228,24 +228,48 @@ feature 'Builds', :feature do
       end
     end
 
-    context "Build starts environment" do
-      context "Build is successfull and has deployment" do
-        it "shows a link for the build" do
-          -# link to environment.name
-          expect(page).to have_link()
+    context 'Build starts environment' do
+      before do
+        visit namespace_project_build_path(project.namespace, project, build)
+      end
+
+      context 'Build is successfull and has deployment' do
+        let!(:environment) { create(:environment, project: project) }
+
+        let!(:build) do
+          create:ci_build, :success, environment: environment, pipeline: pipeline,  project: project
+        end
+
+        it 'shows a link for the build' do
+          expect(page).to have_link environment.name
         end
       end
 
-      context "Build is complete and not successfull" do
-        it "shows a link for the build" do
-          -# link to environment.name
-          expect(page).to have_link()
+      context 'Build is complete and not successfull' do
+        let!(:environment) { create(:environment, project: project) }
+
+        let!(:build) do
+          create:ci_build, :failed, environment: environment, pipeline: pipeline, project: project
+        end
+
+        it 'shows a link for the build' do
+          expect(page).to have_link environment.name
         end
       end
 
-      context "Build creates a new deployment" do
-        it "shows a link to lastest deployment" do
-          expect(page).to have_link("latest deployment")
+      context 'Build creates a new deployment' do
+        let!(:environment) { create(:environment, project: project) }
+
+        let!(:deployment) do
+          create(:deployment, environment: environment, deployable: build, sha: project.commit.id)
+        end
+
+        let!(:build) do
+          create:ci_build, :success, environment: environment, pipeline: pipeline
+        end
+
+        it 'shows a link to lastest deployment' do
+          expect(page).to have_link('latest deployment')
         end
       end
     end
