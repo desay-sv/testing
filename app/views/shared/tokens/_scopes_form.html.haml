@@ -1,4 +1,8 @@
-- @scopes.each do |scope|
+- scopes = local_assign.fetch(:scopes)
+- prefix = local_assign.fetch(:prefix)
+- token = local_assign.fetch(:token)
+
+- scopes.each do |scope|
   %fieldset
     = check_box_tag "#{prefix}[scopes][]", scope, token.scopes.include?(scope), id: "#{prefix}_scopes_#{scope}"
     = label_tag "#{prefix}_scopes_#{scope}", scope
